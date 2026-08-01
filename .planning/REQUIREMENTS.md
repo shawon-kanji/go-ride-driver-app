@@ -89,8 +89,35 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Traceability
 
-(Populated during roadmap creation)
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| VEH-01 | Phase 1 | Pending |
+| VEH-02 | Phase 1 | Pending |
+| VEH-03 | Phase 1 | Pending |
+| PRES-01 | Phase 2 | Pending |
+| PRES-02 | Phase 2 | Pending |
+| PRES-03 | Phase 2 | Pending |
+| OFFER-01 | Phase 3 | Pending |
+| OFFER-02 | Phase 3 | Pending |
+| OFFER-03 | Phase 3 | Pending |
+| OFFER-04 | Phase 3 | Pending |
+| NOTIF-01 | Phase 4 | Pending |
+| NOTIF-02 | Phase 4 | Pending |
+| TRIP-01 | Phase 5 | Pending |
+| TRIP-02 | Phase 5 | Pending |
+| TRIP-03 | Phase 5 | Pending |
+| TRIP-04 | Phase 5 | Pending |
+| HIST-01 | Phase 6 | Pending |
+| HIST-02 | Phase 6 | Pending |
+
+**Coverage:** 22/22 v1 requirements mapped ✓
+
+**v2 requirements (not mapped — deferred):** PLAT-01, PAY-01, LOC-01, OFFER-05, VEH-04
 
 ---
 *Requirements defined: 2026-08-01*
-*Last updated: 2026-08-01 after initial definition*
+*Last updated: 2026-08-01 after roadmap creation (traceability populated)*
