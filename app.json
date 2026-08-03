@@ -29,6 +29,13 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c5a316a1-c2ac-4f74-ac08-ca1889c4e802"
+      }
+    },
+    "owner": "shawonkanji-dev"
   }
 }
