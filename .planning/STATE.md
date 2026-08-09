@@ -79,6 +79,7 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 - External backend gap: no refresh-token endpoint (60-min hard expiry) — Phase 1 should include proactive session-expiry warning UX to mitigate mid-shift logouts.
 - External backend gap: no REST fallback to list pending job offers — Phase 3 must rely solely on WS reconnect-replay + Phase 4 push as reconciliation paths; do not build a polling workaround.
 - External backend gap: `location-producers` has no auth enforcement despite a configured JWT secret — send auth headers correctly anyway so it "just works" once backend closes this gap.
+- New external backend constraint (2026-08-09, after Phase 1 was coded): `go-ride-backend` now gates `PATCH /driver/online` and `POST /vehicles/{id}/activate` on KYC verification (driver identity + per-vehicle document approval). This app has no upload UI (VEH-04 still v2-deferred), so Phase 1's vehicle-activation testing and all of Phase 2 now require a manually KYC-approved test driver in the backend's Postgres — see REQUIREMENTS.md VEH-03/VEH-04 and `go-ride-backend/doc/DRIVER_KYC_PLAN.md`. Not a blocker on this app's code, just a new manual setup step for anyone verifying against a real backend.
 
 ## Session Continuity
 

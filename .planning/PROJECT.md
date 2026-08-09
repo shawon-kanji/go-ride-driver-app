@@ -18,7 +18,7 @@ A driver can reliably go online, get matched to a nearby rider, and complete a c
 
 - [ ] Driver can sign up and log in with email + password
 - [ ] Driver can view and edit their profile
-- [ ] Driver can register, list, update, and activate/deactivate vehicles (a driver needs an active vehicle before going online)
+- [ ] Driver can register, list, update, and activate/deactivate vehicles (a driver needs an active vehicle before going online; the backend also now requires that vehicle's documents be manually approved — see Context)
 - [ ] Driver can toggle online/offline status
 - [ ] While online, the app broadcasts the driver's location (foreground first; background tracking is a later phase)
 - [ ] Driver receives job offers in realtime over a WebSocket connection, including replayed offers on reconnect
@@ -40,6 +40,7 @@ A driver can reliably go online, get matched to a nearby rider, and complete a c
 - Full backend API contracts (auth, driver-request-handler, `/ws/driver`, location-producers) were mapped directly from the backend source code and cross-checked against `go-ride-kafka-consumers/docs/driver-rider-realtime-communication.md` and `docs/cab-request-flow.md` — no OpenAPI/Postman spec exists anywhere, so TypeScript API types in this app are hand-maintained mirrors of the Go DTOs, not codegenned.
 - Known backend gap (blocking): `go-ride-backend` issues JWT tokens with `aud=go-ride-clients`, but `driver-request-handler` validates `aud=go-ride-drivers` and `websocket-gateway` validates `aud=go-ride-driver-app`. As configured today, this app's tokens will fail verification against both until the backend config is reconciled — needed before the online/job-offer phase can work end-to-end against real services.
 - Known backend gaps (non-blocking but shape UX): no refresh-token endpoint (60-min hard expiry forces re-login), no REST fallback to list pending job offers (WS-connect replay is the only reconciliation path besides push), `location-producers` has no auth enforcement despite a configured JWT secret.
+- **New backend constraint (added 2026-08-09, after this app's Phase 1 was already coded): `go-ride-backend` now enforces KYC verification before `PATCH /driver/online` or `POST /vehicles/{id}/activate` will succeed** — driver identity `kyc_status = approved` (5 identity documents) AND, per vehicle, all 5 document types (registration, photo front/back/side, number plate) approved for that specific vehicle. This app has no upload UI for it (VEH-04 remains v2-deferred by choice), so local/dev testing of the online-toggle and vehicle-activate flows against a real backend now requires an operator to manually approve a test driver's documents directly in Postgres — see `go-ride-backend/doc/DRIVER_KYC_PLAN.md`. This affects Phase 1's vehicle-activation testing and Phase 2 end-to-end, not just a future KYC-UI phase.
 - A Google Cloud Maps API key has already been created and restricted (Android package + SHA-1, once the EAS project exists) to just Maps SDK for Android, Places API (New), and Routes API.
 - A prior full architecture/prep plan (tech stack rationale, phased roadmap D0–D6, cross-app sequencing with the rider app) was researched and approved before this GSD project was initialized — that plan's content has been folded into this PROJECT.md and the requirements above; treat it as settled context, not open questions.
 
@@ -65,4 +66,4 @@ A driver can reliably go online, get matched to a nearby rider, and complete a c
 | NativeWind v4 + design tokens over Tamagui | Faster iteration on nailing the bold/vibrant visual language; Tamagui's compile-time perf edge isn't needed at this scale yet | — Pending |
 
 ---
-*Last updated: 2026-08-01 after initialization*
+*Last updated: 2026-08-09 — noted go-ride-backend's new KYC verification gate on online-toggle/vehicle-activate (see Context and REQUIREMENTS.md VEH-03/VEH-04)*

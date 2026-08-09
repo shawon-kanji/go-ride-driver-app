@@ -2,6 +2,7 @@
 
 **Gathered:** 2026-08-02
 **Status:** Ready for planning
+**Amended:** 2026-08-09 — go-ride-backend added a KYC verification gate after this context was gathered; see inline updates below (vehicle activation UX, canonical refs, deferred) rather than a rewrite, since the original decisions are still valid, just newly preconditioned on backend-side approval.
 
 <domain>
 ## Phase Boundary
@@ -22,7 +23,7 @@ Driver can sign up (email + password), log in, stay logged in across app restart
 ### Profile scope
 - Backend only allows editing `first_name`/`last_name` via `PATCH /driver/profile` — email, password, and account_status are not editable through any endpoint (no change-password endpoint exists at all). The Profile screen reflects exactly this: read-only email, editable name, plus a factual `account_status` badge (pending/active/blocked — all three values must be handled, not just "pending").
 - Editing the name happens on a **separate "Edit profile" screen** (view screen has an Edit button that navigates away), not inline editing on the view screen itself.
-- No "pending approval / awaiting review" messaging anywhere in the app — the backend does not gate login or the online-toggle on `account_status` in any way (a brand-new driver can go online immediately), so the UI must not imply a blocking review step that doesn't exist. The status badge is a neutral, factual label only.
+- No "pending approval / awaiting review" messaging tied to `account_status` specifically — the backend does not gate login or the online-toggle on `account_status` in any way, so the UI must not imply a blocking review step tied to *that* field. The status badge is a neutral, factual label only. **Update 2026-08-09: this no longer means "a brand-new driver can go online immediately" in practice** — the backend added a separate `kyc_status` field (not `account_status`) that *does* gate the online-toggle and vehicle-activate, requiring manual DB approval since no upload UI exists in this app yet. See the new "KYC gate" note below; this phase's decisions above are unaffected since they were specifically about `account_status`.
 - Logout clears the token, and if the driver happens to be online, makes a best-effort `PATCH /driver/online {is_online:false}` call before clearing the session and redirecting to login (best-effort: logout proceeds regardless of whether that call succeeds — never block logout on it).
 
 ### Vehicle activation UX
@@ -30,6 +31,7 @@ Driver can sign up (email + password), log in, stay logged in across app restart
 - Active/inactive state is shown as a badge + action button per row in the vehicle list (not a radio-select list).
 - There is no deactivate-only action anywhere in the UI — the backend has no deactivate endpoint (deactivation only ever happens as a side effect of activating a different vehicle). Do not build a disabled/hinted deactivate control; simply don't offer one.
 - Zero-vehicles first-launch state: an empty-state view (illustration/message + a prominent "Register vehicle" CTA), not an auto-opened registration form.
+- **Gotcha added 2026-08-09 (after this context was originally gathered):** activating a vehicle now also requires backend-side KYC approval (driver identity + that vehicle's 5 document types), added to `go-ride-backend` after this phase's decisions were made. `POST /vehicles/{id}/activate` will return `403 KYC_NOT_APPROVED` or `403 VEHICLE_NOT_VERIFIED` for any driver/vehicle that hasn't been manually approved in Postgres — this is not something the app UI can work around, and it isn't a new decision for the confirm-dialog UX above (the swap-active-vehicle flow is unchanged), just a new precondition for the activate call to succeed at all when testing against a real backend. No app-side handling decision has been made for surfacing these two error codes distinctly from other activate failures — treat as Claude's discretion if hit during implementation, consistent with how other error codes are handled.
 
 ### Vehicle list & registration form
 - Registration/edit form includes all 5 backend fields: `plate_number`, `color`, `model_name`, `seat_count`, `category`.
@@ -65,7 +67,7 @@ Driver can sign up (email + password), log in, stay logged in across app restart
 - `go-ride-backend/application/driver/dto.go` — `SignupRequest`/`LoginRequest`/`DriverResponse`/`UpdateProfileRequest`/`SignupResponse`/`LoginResponse` shapes. **Critical: `SignupResponse` has no token field — signup must be chained with an immediate login call to authenticate the driver.**
 - `go-ride-backend/application/vehicle/dto.go` — vehicle request/response DTOs and field validation (`plate_number` 2-20 chars, `color` 2-50, `model_name` 1-100, `seat_count` 1-20, `category` enum `normal|luxury`)
 - `go-ride-backend/infrastructure/repository/vehicle_repository_gorm.go` — `Activate()` method showing the transactional auto-deactivate-previous-vehicle behavior
-- `go-ride-backend/domain/driver/entity.go` — `account_status` enum values (`pending`/`active`/`blocked`), confirmed never enforced in driver login/online-toggle logic
+- `go-ride-backend/domain/driver/entity.go` — `account_status` enum values (`pending`/`active`/`blocked`), confirmed never enforced in driver login/online-toggle logic. **Added 2026-08-09:** this same file now also has a separate `kyc_status` enum (`not_started`/`in_review`/`approved`/`rejected`) which *is* enforced on online-toggle/activate — see `go-ride-backend/doc/DRIVER_KYC_PLAN.md` and `application/driver/update_online_status.go`/`application/vehicle/activate.go`.
 - `go-ride-backend/pkg/apperror/errors.go` — flat `{code, message}` error response shape (no nested `{error: {...}}` wrapper), error code list (`EMAIL_ALREADY_TAKEN`, `INVALID_CREDENTIALS`, `PLATE_ALREADY_REGISTERED`, `VEHICLE_FORBIDDEN`, `VEHICLE_NOT_FOUND`, `VALIDATION_ERROR`, etc.)
 - `go-ride-db-schema/migrations/000017_create_vehicles.up.sql` — `idx_vehicles_driver_active` unique partial index (`WHERE is_active`), the DB-level backstop for the single-active-vehicle rule
 
@@ -97,7 +99,7 @@ No specific visual/product references beyond what's in the decisions above — v
 ## Deferred Ideas
 
 - Vehicle delete/remove affordance in the UI — left as Claude's discretion for this phase rather than a hard requirement or an explicit exclusion (see Claude's Discretion above); not a new capability, just an open UI-completeness question.
-- Account-status-driven gating/verification UX — out of scope until the backend actually adds a verification flow (tracked as v2 requirement VEH-04 in REQUIREMENTS.md).
+- Account-status-driven gating/verification UX — out of scope; **update 2026-08-09: the backend has now added a verification flow** (tracked as v2 requirement VEH-04 in REQUIREMENTS.md, no longer backend-blocked, still deferred to v2 by this app's own choice) — a KYC document-upload UI remains a future phase, not this one, but see the new "Gotcha" note above under Vehicle activation UX for how its backend-side enforcement already affects testing this phase's vehicle-activate flow today.
 
 </deferred>
 

@@ -5,6 +5,8 @@
 **Researched:** 2026-08-01
 **Confidence:** MEDIUM-HIGH
 
+> **Resolved 2026-08-09:** every "unclear whether the backend enforces document/vehicle KYC" callout below (executive summary, Gaps section, feature table) is now answered — `go-ride-backend` implemented it. See `.planning/REQUIREMENTS.md` VEH-04 and `go-ride-backend/doc/DRIVER_KYC_PLAN.md` for current behavior; left the analysis below as-written since it accurately reflects the state at research time and the reasoning ("changes whether vehicle registration is one-phase or two-phase") is still relevant context for why VEH-04 was scoped as a separate, deferred requirement rather than folded into Phase 1.
+
 ## Executive Summary
 
 This is a driver-side mobile client for a ride-hailing platform — a well-understood product category (Uber Driver, Bolt Driver, Grab Driver, Lyft Driver all converge on the same core loop: go online → receive offer → accept → navigate → complete trip → get paid). The recommended build is Expo SDK 57 (React Native 0.86, React 19.2, New Architecture mandatory — there is no "legacy architecture" fallback available anymore), with `expo-router` for navigation, TanStack Query for server state, Zustand for ephemeral/realtime session state, NativeWind v4 for the required bold/vibrant visual identity, and `react-native-maps` for map display. The single most important architectural decision is treating the WebSocket connection and location broadcaster as app-level singletons wired to app lifecycle (not screen-scoped `useEffect`s) — the entire product's core value proposition ("without missing or losing a job offer") depends on this.

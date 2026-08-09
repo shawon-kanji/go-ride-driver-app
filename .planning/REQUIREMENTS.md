@@ -18,11 +18,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **VEH-01**: Driver can register a vehicle
 - [ ] **VEH-02**: Driver can list, view, and update their registered vehicles
-- [ ] **VEH-03**: Driver can activate/deactivate a vehicle — no separate document-verification/approval gate for v1, an active vehicle record alone is sufficient to go online
+- [ ] **VEH-03**: Driver can activate/deactivate a vehicle — **as of 2026-08-09, `go-ride-backend` itself now enforces a KYC gate on `POST /vehicles/{id}/activate` regardless of this app's own scope** (see VEH-04): the driver's identity `kyc_status` must be `approved` and the target vehicle must have all 5 required document types (registration, photo front/back/side, number plate) approved, or the backend returns `403 KYC_NOT_APPROVED`/`VEHICLE_NOT_VERIFIED`. Since this app has no upload UI in v1, testing/demo requires an operator to manually flip these to `approved` directly in Postgres (no backoffice endpoint exists on the backend either). The original "no gate for v1" framing describes this app's UI scope, not backend behavior.
 
 ### Presence & Location
 
-- [ ] **PRES-01**: Driver can toggle online/offline status, gated on having at least one active vehicle
+- [ ] **PRES-01**: Driver can toggle online/offline status, gated on having at least one active vehicle — **and, as of 2026-08-09, also gated by the backend on the same KYC approval described under VEH-03** (`PATCH /driver/online` returns `403 KYC_NOT_APPROVED` if driver identity isn't approved, or `403 VEHICLE_NOT_VERIFIED` if the currently active vehicle's documents aren't). See VEH-03/VEH-04.
 - [ ] **PRES-02**: While online, the app broadcasts the driver's foreground location to the backend on a tiered interval
 - [ ] **PRES-03**: Driver sees their current location on a map while online
 
@@ -72,7 +72,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Verification
 
-- **VEH-04**: Document upload / admin approval step before a vehicle can go online (blocked — backend has no verification fields/flow today; revisit if backend adds this)
+- **VEH-04**: Document upload / admin approval step before a vehicle can go online — **no longer backend-blocked as of 2026-08-09.** `go-ride-backend` now implements the full driver-facing flow: `POST /api/v1/driver/kyc/documents/upload-url` (presigned S3/AIStor PUT URL) → driver uploads directly to object storage → `POST /api/v1/driver/kyc/documents/confirm`. Two independent tracks: 5 driver-identity documents (selfie, govt ID front/back, driving license front/back) aggregate into `drivers.kyc_status`; 5 vehicle-scoped documents (registration, photo front/back/side, number plate) are tracked per `vehicle_id` and required in full before that specific vehicle is considered verified — a driver with two vehicles needs both fully documented independently. `GET /api/v1/driver/kyc/status` returns current status + documents. **Still missing on the backend**: any reviewer/backoffice surface — approving or rejecting a document is a direct database update today, no admin login or review endpoints exist. This requirement remains deferred to v2 by this app's own choice (not a backend constraint anymore) — promotable to v1 whenever desired, though VEH-03/PRES-01 above mean the backend enforces this regardless of whether the app builds the UI. Full detail: `go-ride-backend/doc/DRIVER_KYC_PLAN.md`.
 
 ## Out of Scope
 
@@ -116,8 +116,8 @@ Explicitly excluded. Documented to prevent scope creep.
 
 **Coverage:** 22/22 v1 requirements mapped ✓
 
-**v2 requirements (not mapped — deferred):** PLAT-01, PAY-01, LOC-01, OFFER-05, VEH-04
+**v2 requirements (not mapped — deferred):** PLAT-01, PAY-01, LOC-01, OFFER-05, VEH-04 (VEH-04 is deferred by choice, not by backend blocker, as of 2026-08-09 — see its entry above)
 
 ---
 *Requirements defined: 2026-08-01*
-*Last updated: 2026-08-01 after roadmap creation (traceability populated)*
+*Last updated: 2026-08-09 — VEH-03/PRES-01 updated and VEH-04 unblocked to reflect go-ride-backend's new KYC document verification feature (per-driver identity + per-vehicle document approval, gating online/activate); backend has no reviewer UI yet, approval is a manual DB update*

@@ -4,6 +4,8 @@
 **Researched:** 2026-08-01
 **Confidence:** MEDIUM-HIGH (feature landscape is well-documented across Uber/Bolt/Grab/Lyft public materials and driver-community discussion; specific numeric details like heatmap refresh intervals are LOW confidence and not load-bearing for this project)
 
+> **Resolved 2026-08-09:** every "confirm with backend whether KYC exists" callout below is now answered — it does. See `.planning/REQUIREMENTS.md` VEH-04. Left as-written; still useful context for why it was flagged P2/MEDIUM-HIGH rather than folded into Phase 1.
+
 ## Feature Landscape
 
 This research is scoped to the **driver-side** app only (not the rider-facing product). Every incumbent — Uber Driver, Bolt Driver, Grab Driver, Lyft Driver — converges on the same core loop: **go online → receive offer → accept → navigate → complete trip → get paid → repeat**, wrapped in onboarding/compliance and a safety layer. Where they differentiate is earnings intelligence (heatmaps, guaranteed-earnings promos), gamification, and multi-service breadth (Grab's delivery/parcel stack). Given this project's PROJECT.md already locks in cash-only, email+password auth, no reject-offer UX, and Android-first, this document evaluates the full ecosystem landscape but flags where the project's existing decisions already resolve a feature question (rather than re-litigating it).

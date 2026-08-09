@@ -32,6 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Driver can log out and is returned to the login screen
   5. Driver can register a vehicle, view/update their list of vehicles, and activate/deactivate any of them
 **Plans**: TBD
+**Note (added 2026-08-09):** verifying success criterion 5 end-to-end against a real backend now requires a manually KYC-approved test driver + vehicle (`go-ride-backend` blocks `POST /vehicles/{id}/activate` otherwise) — see REQUIREMENTS.md VEH-03/VEH-04 and `go-ride-backend/doc/DRIVER_KYC_PLAN.md`. Not a change to this phase's own requirements, just a new precondition for testing it.
 
 ### Phase 2: Online/Offline + Foreground Location + Maps
 **Goal**: A driver with an active vehicle can go online and their live location is visible on-device and broadcast to the backend.
@@ -43,6 +44,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. While online, the driver sees their current position rendered on a map
   4. While online, the app broadcasts the driver's foreground location to the backend on a tiered interval
 **Plans**: TBD
+**Note (added 2026-08-09):** same KYC precondition as Phase 1's note applies here — `PATCH /driver/online` now also requires driver identity + active-vehicle KYC approval on the backend, on top of the "has an active vehicle" check this phase's criteria already describe.
 
 ### Phase 3: Realtime Job Offers — WebSocket + Accept
 **Goal**: An online driver reliably receives job offers in realtime and can act on them before they expire.
@@ -105,3 +107,4 @@ Research's suggested structure included a 7th phase ("Background Location Tracki
 
 ---
 *Roadmap created: 2026-08-01*
+*Updated 2026-08-09: added Phase 1/2 notes on go-ride-backend's new KYC verification gate — see PROJECT.md Context and REQUIREMENTS.md VEH-03/PRES-01/VEH-04.*
