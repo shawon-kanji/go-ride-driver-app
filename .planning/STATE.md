@@ -2,16 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 01.1 (KYC) planned — 7 plans checker-verified and committed, ready for /gsd:execute-phase 01.1
-last_updated: "2026-08-10T13:00:00.000Z"
-last_activity: 2026-08-10 — Phase 01.1 (KYC) fully planned: CONTEXT, RESEARCH, VALIDATION strategy, and 7 PLAN.md files created, passed gsd-plan-checker (0 blockers), committed
+status: unknown
+stopped_at: Completed 01.1-01-PLAN.md
+last_updated: "2026-08-10T13:23:00.046Z"
 progress:
-  total_phases: 6
+  total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
 ---
 
 # Project State
@@ -21,36 +19,30 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-01)
 
 **Core value:** A driver can reliably go online, get matched to a nearby rider, and complete a cash trip end-to-end without missing or losing a job offer.
-**Current focus:** Phase 01.1 — KYC: Identity and Vehicle Document Verification (inserted ahead of Phase 2)
+**Current focus:** Phase 01.1 — kyc-identity-and-vehicle-document-verification
 
 ## Current Position
 
-Phase: 01.1 of 6 (KYC — Identity and Vehicle Document Verification; inserted after Phase 1, promotes VEH-04 to v1 scope)
-Plan: 7 plans across 5 waves (wave 0: test scaffolding; wave 1: kyc-client + block-reason plumbing; wave 2: upload pipeline + DocumentTile; wave 3: hub screens; wave 4: wiring into vehicle-detail/Home + device verification)
-Status: Planning complete and checker-verified (0 blockers, 1 non-blocking warning on plan 01's file count). Not yet executed — no SUMMARY.md files exist.
-Last activity: 2026-08-10 — Ran research, validation strategy, and planning for Phase 01.1; gsd-plan-checker passed all 9 dimensions; plans + validation strategy committed (62fffc9)
-
-Progress: [██░░░░░░░░] ~17% (Phase 1 of 6 code-complete but unverified; Phase 01.1 planned, not yet executed)
-
-Note: Phase 1's own status (code-complete, pending manual device verification) is unchanged — see Pending Todos below.
+Phase: 01.1 (kyc-identity-and-vehicle-document-verification) — EXECUTING
+Plan: 2 of 7
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
-- Average duration: - min
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 10 min
+- Total execution time: 0.17 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01.1 P01 | 1 | 10min | 3 tasks / 14 files |
 
 **Recent Trend:**
 
-- Last 5 plans: -
+- Last 5 plans: 01.1-01 (10min)
 - Trend: -
 
 *Updated after each plan completion*
@@ -64,6 +56,8 @@ Recent decisions affecting current work:
 
 - Roadmap: Dropped research's suggested 7th phase (Background Location Tracking) — its only requirement (LOC-01) is v2-deferred, so v1 roadmap is 6 phases, not 7.
 - Roadmap: Trip History + Earnings (Phase 6) and this app's overall structure follow research's recommended dependency chain (vehicle active → online → WS connected → accept → trip lifecycle → cash → history/earnings).
+- [Phase 01.1]: Added tsconfig.json types: [jest, node] — ambient jest globals were not auto-discovered under moduleResolution bundler without it
+- [Phase 01.1]: Installed @react-native/jest-preset@0.86.2 explicitly — jest-expo peer dep not auto-installed by npx expo install
 
 ### Pending Todos
 
@@ -90,6 +84,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-10T13:00:00.000Z
-Stopped at: Phase 01.1 (KYC) planned and checker-verified; ready to execute
-Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-01-PLAN.md
+Last session: 2026-08-10T13:23:00.041Z
+Stopped at: Completed 01.1-01-PLAN.md
+Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-02-PLAN.md

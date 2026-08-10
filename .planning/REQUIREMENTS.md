@@ -28,10 +28,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### KYC / Verification
 
-- [ ] **KYC-01**: Driver can upload their 5 identity documents (selfie, govt ID front/back, driving license front/back) via the backend's presigned-URL flow (`upload-url` → direct PUT → `confirm`)
-- [ ] **KYC-02**: Driver can upload the 5 required documents for a specific vehicle (registration, photo front/back/side, number plate), scoped per `vehicle_id`
-- [ ] **KYC-03**: Driver can view their current KYC status (`not_started`/`in_review`/`approved`/`rejected`) and, per document, whether it's uploaded/approved/rejected (with rejection reason) and can re-upload a rejected document
-- [ ] **KYC-04**: Driver who is blocked from activating a vehicle or going online due to incomplete/rejected KYC sees a clear explanation of what's missing and a path to fix it, rather than an opaque `403`
+- [x] **KYC-01**: Driver can upload their 5 identity documents (selfie, govt ID front/back, driving license front/back) via the backend's presigned-URL flow (`upload-url` → direct PUT → `confirm`)
+- [x] **KYC-02**: Driver can upload the 5 required documents for a specific vehicle (registration, photo front/back/side, number plate), scoped per `vehicle_id`
+- [x] **KYC-03**: Driver can view their current KYC status (`not_started`/`in_review`/`approved`/`rejected`) and, per document, whether it's uploaded/approved/rejected (with rejection reason) and can re-upload a rejected document
+- [x] **KYC-04**: Driver who is blocked from activating a vehicle or going online due to incomplete/rejected KYC sees a clear explanation of what's missing and a path to fix it, rather than an opaque `403`
 
 ### Job Offers
 
@@ -105,10 +105,10 @@ Explicitly excluded. Documented to prevent scope creep.
 | VEH-01 | Phase 1 | Pending |
 | VEH-02 | Phase 1 | Pending |
 | VEH-03 | Phase 1 | Pending |
-| KYC-01 | Phase 01.1 | Pending |
-| KYC-02 | Phase 01.1 | Pending |
-| KYC-03 | Phase 01.1 | Pending |
-| KYC-04 | Phase 01.1 | Pending |
+| KYC-01 | Phase 01.1 | Complete |
+| KYC-02 | Phase 01.1 | Complete |
+| KYC-03 | Phase 01.1 | Complete |
+| KYC-04 | Phase 01.1 | Complete |
 | PRES-01 | Phase 2 | Pending |
 | PRES-02 | Phase 2 | Pending |
 | PRES-03 | Phase 2 | Pending |
