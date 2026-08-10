@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 01.1-01-PLAN.md
-last_updated: "2026-08-10T13:23:00.046Z"
+stopped_at: Completed 01.1-02-PLAN.md
+last_updated: "2026-08-10T13:29:32.880Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -24,25 +24,26 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 01.1 (kyc-identity-and-vehicle-document-verification) — EXECUTING
-Plan: 2 of 7
+Plan: 3 of 7
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: 10 min
-- Total execution time: 0.17 hours
+- Total plans completed: 2
+- Average duration: 7.5 min
+- Total execution time: 0.25 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01.1 P01 | 1 | 10min | 3 tasks / 14 files |
+| 01.1 P02 | 1 | 5min | 2 tasks / 5 files |
 
 **Recent Trend:**
 
-- Last 5 plans: 01.1-01 (10min)
+- Last 5 plans: 01.1-01 (10min), 01.1-02 (5min)
 - Trend: -
 
 *Updated after each plan completion*
@@ -58,6 +59,8 @@ Recent decisions affecting current work:
 - Roadmap: Trip History + Earnings (Phase 6) and this app's overall structure follow research's recommended dependency chain (vehicle active → online → WS connected → accept → trip lifecycle → cash → history/earnings).
 - [Phase 01.1]: Added tsconfig.json types: [jest, node] — ambient jest globals were not auto-discovered under moduleResolution bundler without it
 - [Phase 01.1]: Installed @react-native/jest-preset@0.86.2 explicitly — jest-expo peer dep not auto-installed by npx expo install
+- [Phase 01.1]: [Phase 01.1-02]: expo-image-picker config plugin sets microphonePermission: false explicitly to strip the default RECORD_AUDIO permission (no audio/video capture in this phase)
+- [Phase 01.1]: [Phase 01.1-02]: Preserved go-ride-backend's asymmetric KYC response envelopes as-is (bare for upload-url/status, {document: ...} for confirm) rather than normalizing them client-side
 
 ### Pending Todos
 
@@ -84,6 +87,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-10T13:23:00.041Z
-Stopped at: Completed 01.1-01-PLAN.md
-Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-02-PLAN.md
+Last session: 2026-08-10T13:29:32.876Z
+Stopped at: Completed 01.1-02-PLAN.md
+Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-03-PLAN.md
