@@ -64,3 +64,59 @@ export interface ApiErrorBody {
   code: string;
   message: string;
 }
+
+// KYC types mirror application/kyc/dto.go and domain/kyc/entity.go in go-ride-backend.
+
+export type KycStatus = 'not_started' | 'in_review' | 'approved' | 'rejected';
+
+export type DocumentStatus = 'uploaded' | 'approved' | 'rejected';
+
+export type IdentityDocumentType =
+  | 'selfie'
+  | 'govt_id_front'
+  | 'govt_id_back'
+  | 'driving_license_front'
+  | 'driving_license_back';
+
+export type VehicleDocumentType =
+  | 'vehicle_registration'
+  | 'vehicle_photo_front'
+  | 'vehicle_photo_back'
+  | 'vehicle_photo_side'
+  | 'vehicle_number_plate';
+
+export type DocumentType = IdentityDocumentType | VehicleDocumentType;
+
+export interface DocumentResponse {
+  id: string;
+  document_type: DocumentType;
+  vehicle_id?: string;
+  status: DocumentStatus;
+  rejection_reason?: string;
+}
+
+export interface KycStatusResponse {
+  kyc_status: KycStatus;
+  documents: DocumentResponse[];
+}
+
+export interface RequestUploadUrlPayload {
+  document_type: DocumentType;
+  content_type: string;
+  /** Present ONLY for vehicle-scoped document types — the key must be absent
+   *  (not an empty string) for identity types; go-ride-backend's
+   *  application/kyc/validation.go rejects a present-but-empty vehicle_id. */
+  vehicle_id?: string;
+}
+
+export interface RequestUploadUrlResponse {
+  upload_url: string;
+  key: string;
+}
+
+export interface ConfirmUploadPayload {
+  document_type: DocumentType;
+  key: string;
+  /** Same present/absent rule as RequestUploadUrlPayload.vehicle_id. */
+  vehicle_id?: string;
+}
