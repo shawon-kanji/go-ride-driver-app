@@ -81,6 +81,10 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 - External backend gap: `location-producers` has no auth enforcement despite a configured JWT secret — send auth headers correctly anyway so it "just works" once backend closes this gap.
 - New external backend constraint (2026-08-09, after Phase 1 was coded): `go-ride-backend` now gates `PATCH /driver/online` and `POST /vehicles/{id}/activate` on KYC verification (driver identity + per-vehicle document approval). This app has no upload UI (VEH-04 still v2-deferred), so Phase 1's vehicle-activation testing and all of Phase 2 now require a manually KYC-approved test driver in the backend's Postgres — see REQUIREMENTS.md VEH-03/VEH-04 and `go-ride-backend/doc/DRIVER_KYC_PLAN.md`. Not a blocker on this app's code, just a new manual setup step for anyone verifying against a real backend.
 
+### Roadmap Evolution
+
+- Phase 01.1 inserted after Phase 1: KYC - Identity and Vehicle Document Verification (URGENT). Promotes REQUIREMENTS.md's VEH-04 (previously v2-deferred) to v1 scope, driver-app UI only — backend upload/status/gating endpoints already exist and are unaffected. Inserted because the backend now hard-gates `PATCH /driver/online` and `POST /vehicles/{id}/activate` on KYC approval, so Phase 2 (Online/Location/Maps) cannot be meaningfully exercised without this UI existing first.
+
 ## Session Continuity
 
 Last session: 2026-08-02T13:37:09.767Z

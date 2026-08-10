@@ -13,6 +13,7 @@ The build follows the platform's own dependency chain: a driver must exist and h
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation — Auth, Profile, Vehicles** - Driver can sign up, log in, manage their profile, and register/manage vehicles
+- [ ] **Phase 01.1: KYC — Identity & Vehicle Document Verification (INSERTED)** - Driver can upload identity and vehicle documents, track approval status, and understand why they're blocked until approved
 - [ ] **Phase 2: Online/Offline + Foreground Location + Maps** - Driver with an active vehicle can go online, see themselves on a map, and broadcast location
 - [ ] **Phase 3: Realtime Job Offers — WebSocket + Accept** - Online driver receives job offers over WebSocket (with reconnect replay) and can accept before TTL expiry
 - [ ] **Phase 4: Push Notifications for Job Offers** - Backgrounded/killed-app driver still receives and can act on job offer notifications
@@ -33,6 +34,19 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. Driver can register a vehicle, view/update their list of vehicles, and activate/deactivate any of them
 **Plans**: TBD
 **Note (added 2026-08-09):** verifying success criterion 5 end-to-end against a real backend now requires a manually KYC-approved test driver + vehicle (`go-ride-backend` blocks `POST /vehicles/{id}/activate` otherwise) — see REQUIREMENTS.md VEH-03/VEH-04 and `go-ride-backend/doc/DRIVER_KYC_PLAN.md`. Not a change to this phase's own requirements, just a new precondition for testing it.
+
+### Phase 01.1: KYC — Identity & Vehicle Document Verification (INSERTED)
+**Goal**: A driver can upload their identity and vehicle documents, track approval status, and understand why they're blocked from activating a vehicle or going online until approved.
+**Depends on**: Phase 1
+**Requirements**: KYC-01, KYC-02, KYC-03, KYC-04
+**Success Criteria** (what must be TRUE):
+  1. Driver can capture or pick and upload all 5 identity documents (selfie, govt ID front/back, driving license front/back) via the presigned-URL flow
+  2. Driver can capture or pick and upload all 5 required documents for a specific vehicle (registration, photo front/back/side, number plate)
+  3. Driver can view their current KYC status and, per document, its uploaded/approved/rejected state with rejection reason when applicable
+  4. Driver can re-upload a rejected document and see it return to a pending state
+  5. Driver attempting to activate a vehicle or go online while KYC is incomplete/rejected sees a clear explanation (not a raw `403`) with a path into the upload flow
+**Plans**: TBD
+**Note (added 2026-08-10):** Backend (`go-ride-backend`) is fully built for this phase already — `POST /driver/kyc/documents/upload-url`, `POST /driver/kyc/documents/confirm`, `GET /driver/kyc/status` (see `go-ride-backend/doc/DRIVER_KYC_PLAN.md`). This phase is driver-app UI only. Approving/rejecting uploaded documents remains a manual SQL update against Postgres during development — no backoffice/reviewer UI is in scope for this phase (by explicit choice).
 
 ### Phase 2: Online/Offline + Foreground Location + Maps
 **Goal**: A driver with an active vehicle can go online and their live location is visible on-device and broadcast to the backend.
@@ -90,11 +104,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 → 01.1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation — Auth, Profile, Vehicles | 0/TBD | Not started | - |
+| 01.1. KYC — Identity & Vehicle Document Verification (INSERTED) | 0/TBD | Not started | - |
 | 2. Online/Offline + Foreground Location + Maps | 0/TBD | Not started | - |
 | 3. Realtime Job Offers — WebSocket + Accept | 0/TBD | Not started | - |
 | 4. Push Notifications for Job Offers | 0/TBD | Not started | - |

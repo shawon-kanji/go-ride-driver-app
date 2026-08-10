@@ -26,6 +26,13 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PRES-02**: While online, the app broadcasts the driver's foreground location to the backend on a tiered interval
 - [ ] **PRES-03**: Driver sees their current location on a map while online
 
+### KYC / Verification
+
+- [ ] **KYC-01**: Driver can upload their 5 identity documents (selfie, govt ID front/back, driving license front/back) via the backend's presigned-URL flow (`upload-url` → direct PUT → `confirm`)
+- [ ] **KYC-02**: Driver can upload the 5 required documents for a specific vehicle (registration, photo front/back/side, number plate), scoped per `vehicle_id`
+- [ ] **KYC-03**: Driver can view their current KYC status (`not_started`/`in_review`/`approved`/`rejected`) and, per document, whether it's uploaded/approved/rejected (with rejection reason) and can re-upload a rejected document
+- [ ] **KYC-04**: Driver who is blocked from activating a vehicle or going online due to incomplete/rejected KYC sees a clear explanation of what's missing and a path to fix it, rather than an opaque `403`
+
 ### Job Offers
 
 - [ ] **OFFER-01**: Driver receives job offers in realtime over a WebSocket connection while online
@@ -72,7 +79,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ### Verification
 
-- **VEH-04**: Document upload / admin approval step before a vehicle can go online — **no longer backend-blocked as of 2026-08-09.** `go-ride-backend` now implements the full driver-facing flow: `POST /api/v1/driver/kyc/documents/upload-url` (presigned S3/AIStor PUT URL) → driver uploads directly to object storage → `POST /api/v1/driver/kyc/documents/confirm`. Two independent tracks: 5 driver-identity documents (selfie, govt ID front/back, driving license front/back) aggregate into `drivers.kyc_status`; 5 vehicle-scoped documents (registration, photo front/back/side, number plate) are tracked per `vehicle_id` and required in full before that specific vehicle is considered verified — a driver with two vehicles needs both fully documented independently. `GET /api/v1/driver/kyc/status` returns current status + documents. **Still missing on the backend**: any reviewer/backoffice surface — approving or rejecting a document is a direct database update today, no admin login or review endpoints exist. This requirement remains deferred to v2 by this app's own choice (not a backend constraint anymore) — promotable to v1 whenever desired, though VEH-03/PRES-01 above mean the backend enforces this regardless of whether the app builds the UI. Full detail: `go-ride-backend/doc/DRIVER_KYC_PLAN.md`.
+- ~~**VEH-04**~~: **Promoted to v1 on 2026-08-10** as KYC-01..KYC-04 (see "KYC / Verification" under v1 Requirements above) and scheduled as inserted Phase 01.1, since the backend's KYC gate on `PATCH /driver/online` / `POST /vehicles/{id}/activate` made Phase 2 untestable without this UI. Backend-side detail unchanged: `go-ride-backend` implements the full driver-facing flow (`upload-url` → direct S3/AIStor PUT → `confirm`, two independent identity/vehicle tracks, `GET /kyc/status`). Backoffice/reviewer approval remains a manual DB update by explicit choice — not part of KYC-01..04. Full detail: `go-ride-backend/doc/DRIVER_KYC_PLAN.md`.
 
 ## Out of Scope
 
@@ -98,6 +105,10 @@ Explicitly excluded. Documented to prevent scope creep.
 | VEH-01 | Phase 1 | Pending |
 | VEH-02 | Phase 1 | Pending |
 | VEH-03 | Phase 1 | Pending |
+| KYC-01 | Phase 01.1 | Pending |
+| KYC-02 | Phase 01.1 | Pending |
+| KYC-03 | Phase 01.1 | Pending |
+| KYC-04 | Phase 01.1 | Pending |
 | PRES-01 | Phase 2 | Pending |
 | PRES-02 | Phase 2 | Pending |
 | PRES-03 | Phase 2 | Pending |
@@ -114,10 +125,10 @@ Explicitly excluded. Documented to prevent scope creep.
 | HIST-01 | Phase 6 | Pending |
 | HIST-02 | Phase 6 | Pending |
 
-**Coverage:** 22/22 v1 requirements mapped ✓
+**Coverage:** 26/26 v1 requirements mapped ✓
 
-**v2 requirements (not mapped — deferred):** PLAT-01, PAY-01, LOC-01, OFFER-05, VEH-04 (VEH-04 is deferred by choice, not by backend blocker, as of 2026-08-09 — see its entry above)
+**v2 requirements (not mapped — deferred):** PLAT-01, PAY-01, LOC-01, OFFER-05 (VEH-04 promoted to v1 as KYC-01..04, see above)
 
 ---
 *Requirements defined: 2026-08-01*
-*Last updated: 2026-08-09 — VEH-03/PRES-01 updated and VEH-04 unblocked to reflect go-ride-backend's new KYC document verification feature (per-driver identity + per-vehicle document approval, gating online/activate); backend has no reviewer UI yet, approval is a manual DB update*
+*Last updated: 2026-08-10 — VEH-04 promoted from v2 to v1 as KYC-01..KYC-04, mapped to inserted Phase 01.1, following go-ride-backend's KYC gate on online/activate making Phase 2 untestable without upload UI*
