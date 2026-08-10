@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { DocumentTile } from './DocumentTile';
 import { makeDocument } from '../../../test-utils/kyc-fixtures';
@@ -37,20 +37,18 @@ describe('DocumentTile', () => {
       status: 'rejected',
       rejection_reason: 'Photo is blurry',
     });
-    await render(
+    const { rerender } = await render(
       <DocumentTile documentType="govt_id_front" document={document} onPress={jest.fn()} />,
     );
 
     expect(screen.getByText('Rejected')).toBeTruthy();
     expect(screen.getByText('Photo is blurry')).toBeTruthy();
 
-    cleanup();
-
     const documentWithoutReason = makeDocument('govt_id_front', {
       status: 'rejected',
       rejection_reason: undefined,
     });
-    await render(
+    await rerender(
       <DocumentTile
         documentType="govt_id_front"
         document={documentWithoutReason}
