@@ -6,6 +6,9 @@ import { Badge } from '../../../../components/Badge';
 import { Banner } from '../../../../components/Banner';
 import { Button } from '../../../../components/Button';
 import { ApiError } from '../../../../api/http-client';
+import { kycBlockReason } from '../../../../features/kyc/kyc-errors';
+import type { KycBlockReason } from '../../../../features/kyc/kyc-errors';
+import { KycBlockedBanner } from '../../../../features/kyc/components/KycBlockedBanner';
 import {
   useActivateVehicleMutation,
   useDeleteVehicleMutation,
@@ -23,6 +26,7 @@ export default function VehicleDetailScreen() {
   const deleteMutation = useDeleteVehicleMutation();
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [blockReason, setBlockReason] = useState<KycBlockReason | null>(null);
 
   if (isLoading || !data) {
     return (
@@ -37,9 +41,19 @@ export default function VehicleDetailScreen() {
 
   const handleActivate = () => {
     activateMutation.mutate(vehicle.id, {
-      onSuccess: () => setConfirmVisible(false),
+      onSuccess: () => {
+        setConfirmVisible(false);
+        setBlockReason(null);
+      },
       onError: (error) => {
         setConfirmVisible(false);
+        const reason = kycBlockReason(error);
+        if (reason) {
+          setBlockReason(reason);
+          setErrorMessage(null);
+          return;
+        }
+        setBlockReason(null);
         setErrorMessage(error instanceof ApiError ? error.message : 'Unable to activate vehicle.');
       },
     });
@@ -57,6 +71,16 @@ export default function VehicleDetailScreen() {
   return (
     <View className="flex-1">
       <View className="px-6 pt-6">
+        {blockReason && (
+          <KycBlockedBanner
+            reason={blockReason}
+            onDismiss={() => setBlockReason(null)}
+            onPressAction={() =>
+              router.push({ pathname: '/(app)/(tabs)/verify', params: { vehicleId: vehicle.id } })
+            }
+          />
+        )}
+
         {errorMessage && (
           <Banner
             message={errorMessage}
@@ -82,6 +106,16 @@ export default function VehicleDetailScreen() {
             />
           </View>
         )}
+
+        <View className="mb-2">
+          <Button
+            label="Verify documents"
+            variant="ghost"
+            onPress={() =>
+              router.push({ pathname: '/(app)/(tabs)/verify', params: { vehicleId: vehicle.id } })
+            }
+          />
+        </View>
       </View>
 
       <VehicleForm
