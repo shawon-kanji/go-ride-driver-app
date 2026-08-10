@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 01.1-04-PLAN.md
-last_updated: "2026-08-10T14:06:07.108Z"
+stopped_at: Completed 01.1-05-PLAN.md
+last_updated: "2026-08-10T14:14:04.115Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 01.1 (kyc-identity-and-vehicle-document-verification) — EXECUTING
-Plan: 5 of 7
+Plan: 6 of 7
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 4
-- Average duration: 6.75 min
-- Total execution time: 0.72 hours
+- Total plans completed: 5
+- Average duration: 6.6 min
+- Total execution time: 0.85 hours
 
 **By Phase:**
 
@@ -42,11 +42,12 @@ Plan: 5 of 7
 | 01.1 P02 | 1 | 5min | 2 tasks / 5 files |
 | 01.1 P03 | 1 | 5min | 2 tasks / 6 files |
 | 01.1 P04 | 1 | 24min | 3 tasks / 6 files |
+| 01.1 P05 | 1 | 8min | 2 tasks / 4 files |
 
 **Recent Trend:**
 
-- Last 5 plans: 01.1-01 (10min), 01.1-02 (5min), 01.1-03 (5min), 01.1-04 (24min)
-- Trend: up (Task 3's compounding TDD/test-infra fixes added time)
+- Last 5 plans: 01.1-01 (10min), 01.1-02 (5min), 01.1-03 (5min), 01.1-04 (24min), 01.1-05 (8min)
+- Trend: down (Task 3's compounding TDD/test-infra fixes made 04 an outlier; 05 back to baseline)
 
 *Updated after each plan completion*
 
@@ -67,6 +68,7 @@ Recent decisions affecting current work:
 - [Phase 01.1]: [Phase 01.1-03]: RNTL v14's `render()` is async — all component tests using `render()` in this repo must `await` it before querying `screen`
 - [Phase 01.1]: [Phase 01.1-04]: RNTL v14's `renderHook()` is also async (same as `render()`) — must be awaited before destructuring `{ result }`
 - [Phase 01.1]: [Phase 01.1-04]: `createTestQueryClient()` must zero `gcTime` for mutations, not just queries — the default 5-minute mutation `gcTime` schedules a real timer that outlives the test and blocks Jest from exiting
+- [Phase 01.1]: [Phase 01.1-05]: RNTL v14's rerender() (like render()) returns a Promise and must be awaited before subsequent screen queries — an unawaited rerender leaves the prior tree visible to screen queries
 
 ### Pending Todos
 
@@ -93,6 +95,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-10T14:06:07.108Z
-Stopped at: Completed 01.1-04-PLAN.md
-Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-05-PLAN.md
+Last session: 2026-08-10T14:14:04.111Z
+Stopped at: Completed 01.1-05-PLAN.md
+Resume file: .planning/phases/01.1-kyc-identity-and-vehicle-document-verification/01.1-06-PLAN.md
