@@ -40,7 +40,7 @@ describe('useUploadDocumentMutation', () => {
   describe('identity documents', () => {
     it('omits vehicle_id entirely from the upload-url and confirm payloads', async () => {
       const client = createTestQueryClient();
-      const { result } = renderHook(() => useUploadDocumentMutation(), {
+      const { result } = await renderHook(() => useUploadDocumentMutation(), {
         wrapper: createQueryWrapper(client),
       });
 
@@ -62,7 +62,7 @@ describe('useUploadDocumentMutation', () => {
   describe('upload sequence', () => {
     it('calls upload-url, then the raw PUT, then confirm, in that order', async () => {
       const client = createTestQueryClient();
-      const { result } = renderHook(() => useUploadDocumentMutation(), {
+      const { result } = await renderHook(() => useUploadDocumentMutation(), {
         wrapper: createQueryWrapper(client),
       });
 
@@ -80,7 +80,7 @@ describe('useUploadDocumentMutation', () => {
     it('invalidates the kyc status query after a successful upload', async () => {
       const client = createTestQueryClient();
       const invalidateSpy = jest.spyOn(client, 'invalidateQueries');
-      const { result } = renderHook(() => useUploadDocumentMutation(), {
+      const { result } = await renderHook(() => useUploadDocumentMutation(), {
         wrapper: createQueryWrapper(client),
       });
 
@@ -101,7 +101,7 @@ describe('useUploadDocumentMutation', () => {
   describe('vehicle-scoped documents', () => {
     it('includes vehicle_id in the upload-url and confirm payloads', async () => {
       const client = createTestQueryClient();
-      const { result } = renderHook(() => useUploadDocumentMutation(), {
+      const { result } = await renderHook(() => useUploadDocumentMutation(), {
         wrapper: createQueryWrapper(client),
       });
 
@@ -122,7 +122,7 @@ describe('useUploadDocumentMutation', () => {
 
     it('throws before any network call when vehicle_id is missing', async () => {
       const client = createTestQueryClient();
-      const { result } = renderHook(() => useUploadDocumentMutation(), {
+      const { result } = await renderHook(() => useUploadDocumentMutation(), {
         wrapper: createQueryWrapper(client),
       });
 
