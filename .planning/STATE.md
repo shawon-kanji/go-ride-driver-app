@@ -85,7 +85,7 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ### Blockers/Concerns
 
-- External backend blocker (from research): `go-ride-backend` issues JWT `aud=go-ride-clients`, but `driver-request-handler` expects `aud=go-ride-drivers` and `websocket-gateway` expects `aud=go-ride-driver-app`. Must be reconciled before Phase 3 (Realtime Job Offers) can be tested end-to-end against real services.
+- ~~External backend blocker: JWT `aud` mismatch~~ — **Resolved, confirmed 2026-08-11.** Driver tokens issue `aud=go-ride-drivers`; `driver-request-handler` and `websocket-gateway` both validate `aud=go-ride-drivers` (fixed in `go-ride-backend` commit `5e877b4`). No reconciliation needed before Phase 3 — see PROJECT.md Context.
 - External backend gap: no refresh-token endpoint (60-min hard expiry) — Phase 1 should include proactive session-expiry warning UX to mitigate mid-shift logouts.
 - External backend gap: no REST fallback to list pending job offers — Phase 3 must rely solely on WS reconnect-replay + Phase 4 push as reconciliation paths; do not build a polling workaround.
 - External backend gap: `location-producers` has no auth enforcement despite a configured JWT secret — send auth headers correctly anyway so it "just works" once backend closes this gap.
