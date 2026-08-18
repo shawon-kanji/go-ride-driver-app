@@ -83,6 +83,20 @@ push notifications are NOT this phase (Phases 3/4/5).
   through this confirmation (D06 → D07 → online), never a direct toggle — per the
   design's own stated rule.
 
+### Design-system fidelity override (added after UI-SPEC review, 2026-08-18)
+- The design handoff's type scale (Plus Jakarta Sans weights 400/500/600/700/800 — 5
+  weights; sizes 12/13/15/17/18/19/22/24/30px — 9 distinct sizes) and spacing scale
+  (includes 10/14/18/22px, not just multiples of 4) are BOTH explicitly approved,
+  locked overrides of `gsd-ui-checker`'s generic-app defaults (which cap at 2 weights,
+  4 sizes, and a {4,8,16,24,32,48,64} spacing set). Those generic caps exist to stop
+  invented/sprawling AI-slop typography and spacing — they don't apply here because
+  this phase is implementing an already-finalized, real design system
+  (`design_handoff_go_ride/`) pixel-for-pixel, not inventing one. `02-UI-SPEC.md`
+  should carry the full fidelity scale as specified; do not water it down to fit the
+  generic caps. This decision is user-confirmed and should be cited by name
+  ("design-system fidelity override") if `gsd-ui-checker` or any downstream agent
+  flags these values again.
+
 ### Claude's Discretion
 - Exact foreground location ping interval/tiering (PRES-02 says "tiered interval" —
   balance battery vs. dispatch freshness; research should confirm a concrete number,
