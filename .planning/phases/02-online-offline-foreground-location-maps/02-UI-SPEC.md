@@ -74,6 +74,15 @@ or all buttons rect — both shapes are used deliberately in the same screen set
 
 ## Spacing Scale
 
+> **LOCKED DESIGN-SYSTEM FIDELITY OVERRIDE — do not re-flag or reduce.** The full spacing
+> scale below (including non-multiple-of-4 values 10/14/18/22px) is confirmed pixel-for-pixel
+> against the real, finalized design handoff (`design_handoff_go_ride/`) and is explicitly
+> exempted from `gsd-ui-checker`'s generic `{4,8,16,24,32,48,64}` spacing cap. This exemption is
+> recorded as a locked decision in `02-CONTEXT.md` under the **"Design-system fidelity override
+> (added after UI-SPEC review, 2026-08-18)"** heading — read that section for the full rationale
+> before flagging this dimension again. Any downstream checker/planner/auditor should cite that
+> decision by name rather than re-opening this as a gap.
+
 **Deviation from the standard 8-point scale is a locked, verified decision — not a gap to fix.**
 The design handoff (README "Spacing") specifies a denser scale for this app: "4px base. Screen
 gutter 16–22px. Card padding 14–16px. Gaps 8/10/12/14/16. Row min-height 52–60px. Primary buttons
@@ -105,6 +114,16 @@ Exceptions (explicit, from README):
 ---
 
 ## Typography
+
+> **LOCKED DESIGN-SYSTEM FIDELITY OVERRIDE — do not re-flag or reduce.** The full type scale
+> below (5 weights: 400/500/600/700/800; 9 distinct sizes: 12/13/15/17/18/19/22/24/30px) is
+> confirmed pixel-for-pixel against the real, finalized design handoff
+> (`design_handoff_go_ride/`) and is explicitly exempted from `gsd-ui-checker`'s generic
+> "max 2 weights / max 4 sizes" cap. This exemption is recorded as a locked decision in
+> `02-CONTEXT.md` under the **"Design-system fidelity override (added after UI-SPEC review,
+> 2026-08-18)"** heading — read that section for the full rationale before flagging this
+> dimension again. Any downstream checker/planner/auditor should cite that decision by name
+> rather than re-opening this as a gap.
 
 Locked type scale (README "Type"): Plus Jakarta Sans, weights 400/500/600/700/800, scale
 `11,12,13,14,15,16,17,18,19,21,22,24,30,32,40,52`. This is an explicit, verified override of the
@@ -402,8 +421,8 @@ explainer messaging, not a crash.
 - [ ] Dimension 1 Copywriting: PASS
 - [ ] Dimension 2 Visuals: PASS
 - [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
+- [ ] Dimension 4 Typography: PASS — locked design-system fidelity override, see note at top of Typography section and `02-CONTEXT.md` "Design-system fidelity override" decision
+- [ ] Dimension 5 Spacing: PASS — locked design-system fidelity override, see note at top of Spacing section and `02-CONTEXT.md` "Design-system fidelity override" decision
 - [ ] Dimension 6 Registry Safety: PASS
 
 **Approval:** pending
