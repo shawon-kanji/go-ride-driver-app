@@ -68,7 +68,7 @@ Plans:
 - [ ] 02-06-PLAN.md — Wave 3: Button design variants, ScreenHeader, SectionCard, lucide Jest mock
 - [ ] 02-07-PLAN.md — Wave 4: TextInput focus/reveal, D01 Sign in and D02 Create account retrofit
 - [ ] 02-08-PLAN.md — Wave 4: verification summariser, StatusDisc, DocumentTile row, D04 Verification hub retrofit
-- [ ] 02-09-PLAN.md — Wave 4: SegmentedControl, VehicleCard rebuild, D05 Vehicles retrofit
+- [ ] 02-09-PLAN.md — Wave 5: SegmentedControl, VehicleCard rebuild, D05 Vehicles retrofit
 - [ ] 02-10-PLAN.md — Wave 4: HomeMap and the D07 ConfirmOnlineSheet
 - [ ] 02-11-PLAN.md — Wave 5: MenuRow and the D03 Menu screen at /menu
 - [ ] 02-12-PLAN.md — Wave 6: ProfileChip, StatCards, useHomeCoords, D06 Home rebuild
