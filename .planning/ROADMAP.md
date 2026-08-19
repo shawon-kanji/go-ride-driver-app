@@ -57,7 +57,23 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Driver with at least one active vehicle can toggle online/offline
   3. While online, the driver sees their current position rendered on a map
   4. While online, the app broadcasts the driver's foreground location to the backend on a tiered interval
-**Plans**: TBD
+**Plans**: 13 plans across 7 waves
+
+Plans:
+- [ ] 02-01-PLAN.md — Wave 1: deps, service base URLs, app.config.js for MAP_API_KEY, Jest mocks, haversineMeters
+- [ ] 02-02-PLAN.md — Wave 1: remove (tabs), flatten routes under (app), rewrite all route literals
+- [ ] 02-03-PLAN.md — Wave 2: tailwind radii/font wiring, Plus Jakarta Sans loading, retokenise the 9 shared components
+- [ ] 02-04-PLAN.md — Wave 2: base-URL-aware request helper, location/driver-trips clients, presence hooks, deriveOnlineGate
+- [ ] 02-05-PLAN.md — Wave 3: location permissions, presence store, tiered broadcaster, layout-level lifecycle
+- [ ] 02-06-PLAN.md — Wave 3: Button design variants, ScreenHeader, SectionCard, lucide Jest mock
+- [ ] 02-07-PLAN.md — Wave 4: TextInput focus/reveal, D01 Sign in and D02 Create account retrofit
+- [ ] 02-08-PLAN.md — Wave 4: verification summariser, StatusDisc, DocumentTile row, D04 Verification hub retrofit
+- [ ] 02-09-PLAN.md — Wave 4: SegmentedControl, VehicleCard rebuild, D05 Vehicles retrofit
+- [ ] 02-10-PLAN.md — Wave 4: HomeMap and the D07 ConfirmOnlineSheet
+- [ ] 02-11-PLAN.md — Wave 5: MenuRow and the D03 Menu screen at /menu
+- [ ] 02-12-PLAN.md — Wave 6: ProfileChip, StatCards, useHomeCoords, D06 Home rebuild
+- [ ] 02-13-PLAN.md — Wave 7: device checkpoints (Maps API key, online/offline + broadcast) and validation sign-off
+
 **Note (added 2026-08-09):** same KYC precondition as Phase 1's note applies here — `PATCH /driver/online` now also requires driver identity + active-vehicle KYC approval on the backend, on top of the "has an active vehicle" check this phase's criteria already describe.
 
 ### Phase 3: Realtime Job Offers — WebSocket + Accept
@@ -110,7 +126,7 @@ Phases execute in numeric order: 1 → 01.1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation — Auth, Profile, Vehicles | 0/TBD | Not started | - |
 | 01.1. KYC — Identity & Vehicle Document Verification (INSERTED) | 6/7 | In Progress|  |
-| 2. Online/Offline + Foreground Location + Maps | 0/TBD | Not started | - |
+| 2. Online/Offline + Foreground Location + Maps | 0/13 | Planned | - |
 | 3. Realtime Job Offers — WebSocket + Accept | 0/TBD | Not started | - |
 | 4. Push Notifications for Job Offers | 0/TBD | Not started | - |
 | 5. Trip Lifecycle + Cash Collection | 0/TBD | Not started | - |
