@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import { Text, View } from 'react-native';
 
-import { Badge } from '../../../components/Badge';
-import { Card } from '../../../components/Card';
-import { useKycStatusQuery } from '../../../features/kyc/api';
-import { useProfileQuery } from '../../../features/profile/api';
+import { Badge } from '../../components/Badge';
+import { Card } from '../../components/Card';
+import { useKycStatusQuery } from '../../features/kyc/api';
+import { useProfileQuery } from '../../features/profile/api';
 
 const KYC_STATUS_BADGE = {
   not_started: { label: 'Not started', variant: 'inactive' },

@@ -2,23 +2,23 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 
-import { Badge } from '../../../../components/Badge';
-import { Banner } from '../../../../components/Banner';
-import { Button } from '../../../../components/Button';
-import { EmptyState } from '../../../../components/EmptyState';
-import { useKycStatusQuery, useUploadDocumentMutation } from '../../../../features/kyc/api';
-import { ReuploadConfirmDialog } from '../../../../features/kyc/components/ReuploadConfirmDialog';
+import { Badge } from '../../../components/Badge';
+import { Banner } from '../../../components/Banner';
+import { Button } from '../../../components/Button';
+import { EmptyState } from '../../../components/EmptyState';
+import { useKycStatusQuery, useUploadDocumentMutation } from '../../../features/kyc/api';
+import { ReuploadConfirmDialog } from '../../../features/kyc/components/ReuploadConfirmDialog';
 import {
   captureFromCamera,
   pickFromLibrary,
   type CaptureResult,
-} from '../../../../features/kyc/document-capture';
+} from '../../../features/kyc/document-capture';
 import {
   DOCUMENT_TYPE_LABELS,
   isDocumentType,
   isVehicleDocumentType,
-} from '../../../../features/kyc/schemas';
-import type { DocumentStatus } from '../../../../api/types';
+} from '../../../features/kyc/schemas';
+import type { DocumentStatus } from '../../../api/types';
 
 const STATUS_BADGE: Record<DocumentStatus, { label: string; variant: 'active' | 'pending' | 'blocked' }> = {
   uploaded: { label: 'In review', variant: 'pending' },

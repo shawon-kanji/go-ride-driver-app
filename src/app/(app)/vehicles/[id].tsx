@@ -2,21 +2,21 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 
-import { Badge } from '../../../../components/Badge';
-import { Banner } from '../../../../components/Banner';
-import { Button } from '../../../../components/Button';
-import { ApiError } from '../../../../api/http-client';
-import { kycBlockReason } from '../../../../features/kyc/kyc-errors';
-import type { KycBlockReason } from '../../../../features/kyc/kyc-errors';
-import { KycBlockedBanner } from '../../../../features/kyc/components/KycBlockedBanner';
+import { Badge } from '../../../components/Badge';
+import { Banner } from '../../../components/Banner';
+import { Button } from '../../../components/Button';
+import { ApiError } from '../../../api/http-client';
+import { kycBlockReason } from '../../../features/kyc/kyc-errors';
+import type { KycBlockReason } from '../../../features/kyc/kyc-errors';
+import { KycBlockedBanner } from '../../../features/kyc/components/KycBlockedBanner';
 import {
   useActivateVehicleMutation,
   useDeleteVehicleMutation,
   useVehicleQuery,
   useVehiclesQuery,
-} from '../../../../features/vehicles/api';
-import { ActivateConfirmDialog } from '../../../../features/vehicles/components/ActivateConfirmDialog';
-import { VehicleForm } from '../../../../features/vehicles/components/VehicleForm';
+} from '../../../features/vehicles/api';
+import { ActivateConfirmDialog } from '../../../features/vehicles/components/ActivateConfirmDialog';
+import { VehicleForm } from '../../../features/vehicles/components/VehicleForm';
 
 export default function VehicleDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

@@ -2,17 +2,17 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 
-import { Badge } from '../../../../components/Badge';
-import { EmptyState } from '../../../../components/EmptyState';
-import { useKycStatusQuery } from '../../../../features/kyc/api';
-import { DocumentTile } from '../../../../features/kyc/components/DocumentTile';
-import { VehicleDocumentSelector } from '../../../../features/kyc/components/VehicleDocumentSelector';
+import { Badge } from '../../../components/Badge';
+import { EmptyState } from '../../../components/EmptyState';
+import { useKycStatusQuery } from '../../../features/kyc/api';
+import { DocumentTile } from '../../../features/kyc/components/DocumentTile';
+import { VehicleDocumentSelector } from '../../../features/kyc/components/VehicleDocumentSelector';
 import {
   IDENTITY_DOCUMENT_TYPES,
   VEHICLE_DOCUMENT_TYPES,
-} from '../../../../features/kyc/schemas';
-import { useVehiclesQuery } from '../../../../features/vehicles/api';
-import type { KycStatus } from '../../../../api/types';
+} from '../../../features/kyc/schemas';
+import { useVehiclesQuery } from '../../../features/vehicles/api';
+import type { KycStatus } from '../../../api/types';
 
 const KYC_STATUS_BADGE: Record<KycStatus, { label: string; variant: 'active' | 'inactive' | 'pending' | 'blocked' }> = {
   not_started: { label: 'Not started', variant: 'inactive' },
