@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-10-PLAN.md
-last_updated: "2026-08-20T22:51:12.000Z"
+stopped_at: Completed 02-10-PLAN.md (documentation-only follow-up; implementation was already committed in a prior, interrupted session)
+last_updated: "2026-08-20T16:04:34.434Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 15
+  completed_plans: 16
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 9 of 13 (02-10 completed out of wave order — see Decisions; 02-09 remains the next plan to execute)
+Plan: 10 of 13 (02-09 and 02-10 both complete; wave 5's 02-09 was the last outstanding plan from that reordering — see Decisions)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 15
-- Average duration: 7.9 min
-- Total execution time: 2.31 hours (02-10's duration is not recorded — see Decisions)
+- Total plans completed: 16
+- Average duration: 8.7 min
+- Total execution time: 2.65 hours (02-10's duration is not recorded — see Decisions)
 
 **By Phase:**
 
@@ -56,10 +56,11 @@ Plan: 9 of 13 (02-10 completed out of wave order — see Decisions; 02-09 remain
 
 **Recent Trend:**
 
-- Last 5 plans: 02-05 (9min), 02-06 (9min), 02-07 (10min), 02-08 (15min), 02-10 (duration not recorded)
-- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 08's slightly longer duration reflects its full-suite gate — tsc/lint/jest/expo export — all green on first attempt, no rework; 02-10's original executor session was interrupted before it could log timing, but its full verification gate re-ran clean during documentation with no rework needed)
+- Last 5 plans: 02-06 (9min), 02-07 (10min), 02-08 (15min), 02-10 (duration not recorded), 02-09 (20min)
+- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 08's slightly longer duration reflects its full-suite gate — tsc/lint/jest/expo export — all green on first attempt, no rework; 02-10's original executor session was interrupted before it could log timing, but its full verification gate re-ran clean during documentation with no rework needed; 02-09's 20min reflects three tasks each touching a shared UI primitive plus two component rewrites, with a full green gate and no rework)
 
 *Updated after each plan completion*
+| Phase 02 P09 | 20 | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-08]: `verification-summary.ts` (pure, React-free) is now the single source of truth for per-track document counts and the "Can't go online: ..." blocker sentence — it counts distinct required types identically to `deriveOnlineGate`, and plans 02-11 (D03) and 02-12 (D06) must reuse its exports rather than re-deriving KYC counts or inventing a second sentence phrasing
 - [Phase 02]: [Phase 02-10]: `HomeMap` (own-position marker + camera-follow/re-centre state machine) and `ConfirmOnlineSheet` (D07 — the only call site allowed to invoke `ensureForegroundLocation()`, and the only path to `PATCH /driver/online`) are built as standalone, independently-tested components; plan 02-12 (D06) composes both directly using the prop signatures and testIDs recorded in 02-10-SUMMARY.md
 - [Phase 02]: [Phase 02-10]: Executed out of wave order (wave 4) ahead of 02-09 (wave 5), which remains outstanding — both were independently dispatchable since neither depends on the other, but STATE.md's "Plan: N of M" resume pointer still tracks 02-09 as the next plan to execute; the original 02-10 executor session was interrupted by a laptop sleep after both task commits (`586b590`, `85b4fc0`) landed but before SUMMARY.md/STATE.md were written — this was closed out by a documentation-only follow-up pass (no code changes) after re-verifying the full gate (`tsc`, `expo lint`, `jest`, `expo export --platform android`) green
+- [Phase 02]: [Phase 02-09]: `VehicleCard`'s sub-line format (`"<colour> · <N> seats · <category>"`) and warning-strip copy (`"<N> document(s) missing or rejected, so this vehicle can't be activated yet."` + a `Fix` control routing to `/verify` preselected to the vehicle) are now the canonical D05 strings — plan 02-10's D07 sheet and any later D06 work must reuse them verbatim rather than inventing a variant
+- [Phase 02]: [Phase 02-09]: `VehicleCard`'s unverified-Activate gate is an in-code-documented UX pre-empt only; `src/app/(app)/vehicles/[id].tsx`'s 403 -> `kycBlockReason` -> `KycBlockedBanner` path (Phase 01.1 plan 07) remains untouched and stays the authoritative backstop — confirmed via `git diff --stat` showing zero changes to that file
+- [Phase 02]: [Phase 02-09]: `grep -c "useKycStatusQuery" src/app/(app)/vehicles/index.tsx` returns 2 (import line + single call site), not the plan's literal `1` — this is an unavoidable artifact of a named import and does not indicate a per-row query; the hook is confirmed called exactly once in the component body
 
 ### Pending Todos
 
@@ -128,6 +132,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-20T22:51:12.000Z
-Stopped at: Completed 02-10-PLAN.md (documentation-only follow-up; implementation was already committed in a prior, interrupted session)
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-09-PLAN.md
+Last session: 2026-08-20T16:04:00.000Z
+Stopped at: Completed 02-09-PLAN.md
+Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-11-PLAN.md (next undispatched plan; waves 1-5 of Phase 02 are now all complete)
