@@ -18,7 +18,8 @@
           "cameraPermission": "GoRide Driver needs camera access so you can photograph your verification documents.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
