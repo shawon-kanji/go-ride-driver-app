@@ -1,9 +1,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { AlertTriangle } from 'lucide-react-native';
 import { useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 
 import { Badge } from '../../../components/Badge';
 import { EmptyState } from '../../../components/EmptyState';
+import { ScreenHeader } from '../../../components/ScreenHeader';
+import { SectionCard } from '../../../components/SectionCard';
 import { useKycStatusQuery } from '../../../features/kyc/api';
 import { DocumentTile } from '../../../features/kyc/components/DocumentTile';
 import { VehicleDocumentSelector } from '../../../features/kyc/components/VehicleDocumentSelector';
@@ -11,6 +14,7 @@ import {
   IDENTITY_DOCUMENT_TYPES,
   VEHICLE_DOCUMENT_TYPES,
 } from '../../../features/kyc/schemas';
+import { describeVerificationBlockers, summariseTrack } from '../../../features/kyc/verification-summary';
 import { useVehiclesQuery } from '../../../features/vehicles/api';
 import type { KycStatus } from '../../../api/types';
 
@@ -37,70 +41,88 @@ export default function VerifyScreen() {
 
   const vehicles = vehicleData?.vehicles ?? [];
   const effectiveVehicleId = selectedVehicleId ?? vehicles[0]?.id;
+  const selectedVehicle = vehicles.find((v) => v.id === effectiveVehicleId);
   const statusBadge = KYC_STATUS_BADGE[kyc.kyc_status];
 
+  const identity = summariseTrack(IDENTITY_DOCUMENT_TYPES, kyc.documents, undefined);
+  const vehicleTrack = effectiveVehicleId
+    ? summariseTrack(VEHICLE_DOCUMENT_TYPES, kyc.documents, effectiveVehicleId)
+    : null;
+  const blockerSentence = describeVerificationBlockers(identity, vehicleTrack);
+
   return (
-    <ScrollView className="flex-1 px-6 py-6" contentContainerClassName="pb-12">
-      <View className="mb-1 flex-row items-center justify-between">
-        <Text className="text-2xl font-bold text-neutral-900">Verification</Text>
-        <Badge label={statusBadge.label} variant={statusBadge.variant} />
-      </View>
-      <Text className="mb-6 text-sm text-neutral-600">
-        Upload every document below. Approval is manual and can take a little while.
-      </Text>
-
-      <Text className="mb-3 text-lg font-semibold text-neutral-900">Identity</Text>
-      {IDENTITY_DOCUMENT_TYPES.map((type) => (
-        <DocumentTile
-          key={type}
-          documentType={type}
-          document={kyc.documents.find((d) => d.document_type === type && d.vehicle_id === undefined)}
-          onPress={() =>
-            router.push({ pathname: '/verify/[documentType]', params: { documentType: type } })
-          }
-        />
-      ))}
-
-      <Text className="mb-3 mt-6 text-lg font-semibold text-neutral-900">Vehicle documents</Text>
-      {vehicles.length === 0 ? (
-        <EmptyState
-          title="No vehicles yet"
-          message="Register a vehicle before uploading its documents."
-          ctaLabel="Add vehicle"
-          onPressCta={() => router.push('/vehicles/new')}
-        />
-      ) : (
-        <>
-          {vehicles.length > 1 && effectiveVehicleId ? (
-            <VehicleDocumentSelector
-              vehicles={vehicles}
-              value={effectiveVehicleId}
-              onChange={setSelectedVehicleId}
-            />
-          ) : (
-            <Text className="mb-4 text-sm font-medium text-neutral-700">
-              {vehicles[0]?.plate_number}
+    <View className="flex-1 bg-neutral-50">
+      <ScreenHeader
+        title="Verification"
+        right={<Badge label={statusBadge.label} variant={statusBadge.variant} />}
+      />
+      <ScrollView className="flex-1" contentContainerClassName="gap-4 px-5 pb-12 pt-4">
+        {blockerSentence && (
+          <View className="flex-row items-start gap-3 rounded-control bg-warning-50 px-3 py-3">
+            <AlertTriangle size={18} strokeWidth={2} color="#92400E" />
+            <Text className="flex-1 text-[14px] font-jakarta-semibold text-warning-700">
+              {blockerSentence}
             </Text>
-          )}
+          </View>
+        )}
 
-          {effectiveVehicleId &&
-            VEHICLE_DOCUMENT_TYPES.map((type) => (
-              <DocumentTile
-                key={type}
-                documentType={type}
-                document={kyc.documents.find(
-                  (d) => d.document_type === type && d.vehicle_id === effectiveVehicleId,
-                )}
-                onPress={() =>
-                  router.push({
-                    pathname: '/verify/[documentType]',
-                    params: { documentType: type, vehicleId: effectiveVehicleId },
-                  })
-                }
+        <SectionCard eyebrow="Your identity" meta={`${identity.uploadedCount} of 5 uploaded`}>
+          {IDENTITY_DOCUMENT_TYPES.map((type) => (
+            <DocumentTile
+              key={type}
+              documentType={type}
+              document={kyc.documents.find((d) => d.document_type === type && d.vehicle_id === undefined)}
+              onPress={() =>
+                router.push({ pathname: '/verify/[documentType]', params: { documentType: type } })
+              }
+            />
+          ))}
+        </SectionCard>
+
+        {vehicles.length === 0 ? (
+          <SectionCard eyebrow="Vehicle documents">
+            <EmptyState
+              title="No vehicles yet"
+              message="Register a vehicle before uploading its documents."
+              ctaLabel="Add vehicle"
+              onPressCta={() => router.push('/vehicles/new')}
+            />
+          </SectionCard>
+        ) : (
+          <>
+            {vehicles.length > 1 && effectiveVehicleId && (
+              <VehicleDocumentSelector
+                vehicles={vehicles}
+                value={effectiveVehicleId}
+                onChange={setSelectedVehicleId}
               />
-            ))}
-        </>
-      )}
-    </ScrollView>
+            )}
+
+            {effectiveVehicleId && vehicleTrack && (
+              <SectionCard
+                eyebrow={`${selectedVehicle?.plate_number ?? 'Vehicle'} · Vehicle documents`}
+                meta={`${vehicleTrack.uploadedCount} of 5 uploaded`}
+              >
+                {VEHICLE_DOCUMENT_TYPES.map((type) => (
+                  <DocumentTile
+                    key={type}
+                    documentType={type}
+                    document={kyc.documents.find(
+                      (d) => d.document_type === type && d.vehicle_id === effectiveVehicleId,
+                    )}
+                    onPress={() =>
+                      router.push({
+                        pathname: '/verify/[documentType]',
+                        params: { documentType: type, vehicleId: effectiveVehicleId },
+                      })
+                    }
+                  />
+                ))}
+              </SectionCard>
+            )}
+          </>
+        )}
+      </ScrollView>
+    </View>
   );
 }
