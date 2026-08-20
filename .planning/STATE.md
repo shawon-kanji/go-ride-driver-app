@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-11-PLAN.md
-last_updated: "2026-08-21T00:20:00.000Z"
+stopped_at: Completed 02-12-PLAN.md
+last_updated: "2026-08-21T01:00:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 17
+  completed_plans: 18
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 11 of 13 (02-11 complete — D03 Menu at /menu, the last plan before wave 6's D06 Home rebuild, plan 02-12)
+Plan: 12 of 13 (02-12 complete — D06 Home rebuild, wave 6; only plan 02-13's manual on-device verification remains)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 17
-- Average duration: 9.1 min
-- Total execution time: 2.99 hours (02-10's duration is not recorded — see Decisions)
+- Total plans completed: 18
+- Average duration: 9.4 min
+- Total execution time: 3.41 hours (02-10's duration is not recorded — see Decisions)
 
 **By Phase:**
 
@@ -62,6 +62,7 @@ Plan: 11 of 13 (02-11 complete — D03 Menu at /menu, the last plan before wave 
 *Updated after each plan completion*
 | Phase 02 P09 | 20 | 3 tasks | 7 files |
 | Phase 02 P11 | 20 | 2 tasks | 5 files |
+| Phase 02 P12 | 25 | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,7 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-09]: `grep -c "useKycStatusQuery" src/app/(app)/vehicles/index.tsx` returns 2 (import line + single call site), not the plan's literal `1` — this is an unavoidable artifact of a named import and does not indicate a per-row query; the hook is confirmed called exactly once in the component body
 - [Phase 02]: [Phase 02-11]: `/menu`'s header status-line copy is locked to `"Account active · ready to drive"` (gate.status === 'ready') and `"Account active · not yet cleared to drive"` (every other gate status) — plan 02-12's D06 profile chip must reuse these verbatim if it echoes status
 - [Phase 02]: [Phase 02-11]: Fixed a real Metro/Expo-Router bundling bug, not menu-specific: Expo Router's `require.context` (`node_modules/expo-router/_ctx.*.js`) auto-registers every file under `src/app` as a route and excludes only `+api`/`+html`/`+middleware` by convention — co-locating a screen's `*.test.tsx` inside `src/app` (this plan's own file layout) gets it auto-registered as its own route and bundled into `expo export`, pulling `@testing-library/react-native`'s Node-only `console` polyfill into the Metro graph and hard-failing the production bundle. Added a `resolver.blockList` entry to `metro.config.js` excluding `*.test.*` project-wide — Metro-only, Jest is unaffected. Any future plan co-locating a screen test file inside `src/app` is now safe by construction. Cosmetic residue: `.expo/types/router.d.ts` still lists `/menu.test` as a typed `Href` (the typed-routes CLI generator is a separate code path from Metro's bundler and doesn't respect `resolver.blockList`) — harmless since the route isn't actually reachable at runtime.
+- [Phase 02]: [Phase 02-12]: D06 Home is fully rebuilt — `HomeMap` + `useHomeCoords` (own-position, never prompts), floating `ProfileChip` -> `/menu`, `StatCards` (real earnings/online-time), the preserved Phase 01.1 Verification card (copy verbatim, className migrated off legacy Tailwind tokens), and a control block that switches on `deriveOnlineGate`'s five statuses to route to `/vehicles`, `/verify`, D07's `ConfirmOnlineSheet`, or `mutate(false)` for Go offline. Every Wave 0 screen test file listed in 02-VALIDATION.md now exists. Remaining phase work is plan 02-13's manual on-device verification pass (bottom-sheet height against the map, whether `pt-14` clears the status bar) — no further D06 code changes anticipated first.
 
 ### Pending Todos
 
@@ -135,6 +137,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-21T00:20:00.000Z
-Stopped at: Completed 02-11-PLAN.md
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-12-PLAN.md (next undispatched plan; wave 6, D06 Home rebuild — last plan of Phase 02)
+Last session: 2026-08-21T01:00:00.000Z
+Stopped at: Completed 02-12-PLAN.md
+Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-13-PLAN.md (next undispatched plan — the phase's manual on-device verification pass)
