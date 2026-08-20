@@ -66,7 +66,7 @@ Plans:
 - [ ] 02-04-PLAN.md — Wave 2: base-URL-aware request helper, location/driver-trips clients, presence hooks, deriveOnlineGate
 - [ ] 02-05-PLAN.md — Wave 3: location permissions, presence store, tiered broadcaster, layout-level lifecycle
 - [ ] 02-06-PLAN.md — Wave 3: Button design variants, ScreenHeader, SectionCard, lucide Jest mock
-- [ ] 02-07-PLAN.md — Wave 4: TextInput focus/reveal, D01 Sign in and D02 Create account retrofit
+- [x] 02-07-PLAN.md — Wave 4: TextInput focus/reveal, D01 Sign in and D02 Create account retrofit
 - [ ] 02-08-PLAN.md — Wave 4: verification summariser, StatusDisc, DocumentTile row, D04 Verification hub retrofit
 - [ ] 02-09-PLAN.md — Wave 5: SegmentedControl, VehicleCard rebuild, D05 Vehicles retrofit
 - [ ] 02-10-PLAN.md — Wave 4: HomeMap and the D07 ConfirmOnlineSheet
@@ -126,7 +126,7 @@ Phases execute in numeric order: 1 → 01.1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation — Auth, Profile, Vehicles | 0/TBD | Not started | - |
 | 01.1. KYC — Identity & Vehicle Document Verification (INSERTED) | 6/7 | In Progress|  |
-| 2. Online/Offline + Foreground Location + Maps | 6/13 | In Progress|  |
+| 2. Online/Offline + Foreground Location + Maps | 7/13 | In Progress|  |
 | 3. Realtime Job Offers — WebSocket + Accept | 0/TBD | Not started | - |
 | 4. Push Notifications for Job Offers | 0/TBD | Not started | - |
 | 5. Trip Lifecycle + Cash Collection | 0/TBD | Not started | - |
