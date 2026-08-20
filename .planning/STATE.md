@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-04-PLAN.md
-last_updated: "2026-08-20T14:13:26.624Z"
+stopped_at: Completed 02-05-PLAN.md
+last_updated: "2026-08-20T14:23:27.975Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 5 of 13
+Plan: 6 of 13
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 10
-- Average duration: 7.4 min
-- Total execution time: 1.59 hours
+- Total plans completed: 11
+- Average duration: 7.5 min
+- Total execution time: 1.74 hours
 
 **By Phase:**
 
@@ -48,11 +48,12 @@ Plan: 5 of 13
 | 02 P02 | 1 | 8min | 2 tasks / 14 files |
 | 02 P03 | 1 | 10min | 3 tasks / 14 files |
 | 02 P04 | 1 | 12min | 3 tasks / 10 files |
+| 02 P05 | 1 | 9min | 3 tasks / 9 files |
 
 **Recent Trend:**
 
-- Last 5 plans: 02-01 (6min), 02-02 (8min), 02-03 (10min), 02-04 (12min)
-- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 02-01 through 02-04 all landed near baseline)
+- Last 5 plans: 02-01 (6min), 02-02 (8min), 02-03 (10min), 02-04 (12min), 02-05 (9min)
+- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 02-01, 02-02, 02-03, 02-05 all landed near baseline)
 
 *Updated after each plan completion*
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-04]: `requestWithBase(baseUrl, path, options)` extracted as the shared core of `apiRequest` — any future backend service gets its own `EXPO_PUBLIC_*_BASE_URL` client file calling `requestWithBase`, while `apiRequest` itself stays pinned to go-ride-backend with an unchanged signature for every existing caller
 - [Phase 02]: [Phase 02-04]: `deriveOnlineGate` (src/features/presence/gating.ts) is now the single source of truth for "may this driver go online" — checks identity (KYC) before vehicle documents to mirror the backend's own 403 precedence, and both D06 (02-10) and D07 (02-09) must consume it directly rather than re-deriving the decision
 - [Phase 02]: [Phase 02-04]: location-producers' `/update-location` decoder uses `DisallowUnknownFields()` — `UpdateLocationPayload` must be built by omitting unset optional keys, never sending them as `undefined`/`null`; `locationClient.updateLocation` only forwards the keys explicitly passed by its caller
+- [Phase 02]: [Phase 02-05]: `location-broadcaster.ts`'s throttle sentinel is `-Infinity`, not `0` — a `0` sentinel compared against a `Date.now()` that is also `0` (fake timers at epoch, or a real device with a misconfigured clock) fails the "nothing sent yet" heartbeat check and silently drops the very first fix
+- [Phase 02]: [Phase 02-05]: `jest.clearAllMocks()` clears call/instance history but NOT a previously-assigned `mockResolvedValue` implementation — any test file that overrides a shared mock's resolved value in one test (e.g. a permission-denied case) must re-assert the happy-path default in `beforeEach`, or the override leaks into every later test in file order
+- [Phase 02]: [Phase 02-05]: `useLocationBroadcastLifecycle()` is mounted once in `src/app/(app)/_layout.tsx`, driven by `useProfileQuery().data.driver.is_online` (server truth, not local UI state) — `startLocationBroadcast()` self-guards on permission so no caller needs to pre-check readiness
 
 ### Pending Todos
 
@@ -111,6 +115,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-20T14:12:26.000Z
-Stopped at: Completed 02-04-PLAN.md
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-05-PLAN.md
+Last session: 2026-08-20T14:22:31.000Z
+Stopped at: Completed 02-05-PLAN.md
+Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-06-PLAN.md
