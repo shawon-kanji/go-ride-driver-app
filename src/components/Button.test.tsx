@@ -32,12 +32,14 @@ describe('Button', () => {
     expect(screen.getByTestId('btn').props.className as string).toContain('min-h-[54px]');
   });
 
-  it('calls onPress once when pressed, and never when disabled', async () => {
+  it('calls onPress once when pressed', async () => {
     const onPress = jest.fn();
     await render(<Button label="Sign in" onPress={onPress} testID="btn" />);
     fireEvent.press(screen.getByTestId('btn'));
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
 
+  it('never calls onPress when disabled', async () => {
     const onPressDisabled = jest.fn();
     await render(
       <Button label="Sign in" onPress={onPressDisabled} disabled testID="btn-disabled" />
