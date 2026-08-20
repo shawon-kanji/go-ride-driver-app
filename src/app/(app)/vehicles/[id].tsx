@@ -76,7 +76,7 @@ export default function VehicleDetailScreen() {
             reason={blockReason}
             onDismiss={() => setBlockReason(null)}
             onPressAction={() =>
-              router.push({ pathname: '/(app)/(tabs)/verify', params: { vehicleId: vehicle.id } })
+              router.push({ pathname: '/verify', params: { vehicleId: vehicle.id } })
             }
           />
         )}
@@ -112,7 +112,7 @@ export default function VehicleDetailScreen() {
             label="Verify documents"
             variant="ghost"
             onPress={() =>
-              router.push({ pathname: '/(app)/(tabs)/verify', params: { vehicleId: vehicle.id } })
+              router.push({ pathname: '/verify', params: { vehicleId: vehicle.id } })
             }
           />
         </View>

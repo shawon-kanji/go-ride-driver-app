@@ -56,7 +56,7 @@ export default function VerifyScreen() {
           documentType={type}
           document={kyc.documents.find((d) => d.document_type === type && d.vehicle_id === undefined)}
           onPress={() =>
-            router.push({ pathname: '/(app)/(tabs)/verify/[documentType]', params: { documentType: type } })
+            router.push({ pathname: '/verify/[documentType]', params: { documentType: type } })
           }
         />
       ))}
@@ -67,7 +67,7 @@ export default function VerifyScreen() {
           title="No vehicles yet"
           message="Register a vehicle before uploading its documents."
           ctaLabel="Add vehicle"
-          onPressCta={() => router.push('/(app)/(tabs)/vehicles/new')}
+          onPressCta={() => router.push('/vehicles/new')}
         />
       ) : (
         <>
@@ -93,7 +93,7 @@ export default function VerifyScreen() {
                 )}
                 onPress={() =>
                   router.push({
-                    pathname: '/(app)/(tabs)/verify/[documentType]',
+                    pathname: '/verify/[documentType]',
                     params: { documentType: type, vehicleId: effectiveVehicleId },
                   })
                 }

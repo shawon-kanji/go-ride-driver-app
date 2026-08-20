@@ -36,7 +36,7 @@ export function ProfileView() {
         <Button
           label="Edit profile"
           variant="ghost"
-          onPress={() => router.push('/(app)/(tabs)/profile/edit')}
+          onPress={() => router.push('/profile/edit')}
         />
         <Button label="Log out" variant="destructive" onPress={logout} />
       </View>

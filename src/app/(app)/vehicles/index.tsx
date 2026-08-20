@@ -28,7 +28,7 @@ export default function VehiclesScreen() {
       <View className="mb-4 flex-row items-center justify-between">
         <Text className="text-2xl font-bold text-neutral-900">Vehicles</Text>
         <View className="w-40">
-          <Button label="Add" onPress={() => router.push('/(app)/(tabs)/vehicles/new')} />
+          <Button label="Add" onPress={() => router.push('/vehicles/new')} />
         </View>
       </View>
 
@@ -38,7 +38,7 @@ export default function VehiclesScreen() {
         renderItem={({ item }) => (
           <VehicleCard
             vehicle={item}
-            onPress={() => router.push(`/(app)/(tabs)/vehicles/${item.id}`)}
+            onPress={() => router.push(`/vehicles/${item.id}`)}
           />
         )}
       />

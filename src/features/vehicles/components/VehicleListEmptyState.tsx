@@ -8,7 +8,7 @@ export function VehicleListEmptyState() {
       title="No vehicles yet"
       message="Register a vehicle to start driving."
       ctaLabel="Register vehicle"
-      onPressCta={() => router.push('/(app)/(tabs)/vehicles/new')}
+      onPressCta={() => router.push('/vehicles/new')}
     />
   );
 }

@@ -26,7 +26,7 @@ export default function HomeScreen() {
         Going online is coming soon. Get ready: register a vehicle and finish document verification.
       </Text>
 
-      <Card onPress={() => router.push('/(app)/(tabs)/verify')} className="mb-3">
+      <Card onPress={() => router.push('/verify')} className="mb-3">
         <View className="flex-row items-center justify-between">
           <Text className="text-base font-semibold text-neutral-900">Verification</Text>
           {kyc && (
@@ -43,12 +43,12 @@ export default function HomeScreen() {
         </Text>
       </Card>
 
-      <Card onPress={() => router.push('/(app)/(tabs)/vehicles')} className="mb-3">
+      <Card onPress={() => router.push('/vehicles')} className="mb-3">
         <Text className="text-base font-semibold text-neutral-900">Vehicles</Text>
         <Text className="mt-1 text-sm text-neutral-600">Register and manage your vehicles</Text>
       </Card>
 
-      <Card onPress={() => router.push('/(app)/(tabs)/profile')}>
+      <Card onPress={() => router.push('/profile')}>
         <Text className="text-base font-semibold text-neutral-900">Profile</Text>
         <Text className="mt-1 text-sm text-neutral-600">View and edit your details</Text>
       </Card>
