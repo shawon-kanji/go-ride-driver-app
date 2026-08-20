@@ -120,3 +120,46 @@ export interface ConfirmUploadPayload {
   /** Same present/absent rule as RequestUploadUrlPayload.vehicle_id. */
   vehicle_id?: string;
 }
+
+// Hand-maintained mirror of
+// go-ride-kafka-consumers/services/driver-request-handler/internal/api/earnings.go
+// earningsResponse.
+export interface EarningsResponse {
+  period: string; // 'today' | 'week'
+  currency_code?: string;
+  total_earnings: number;
+  trip_count: number;
+  daily?: { date: string; earnings: number; trip_count: number }[];
+}
+
+// Hand-maintained mirror of
+// go-ride-kafka-consumers/services/driver-request-handler/internal/api/online_time.go
+// onlineTimeResponse.
+export interface OnlineTimeResponse {
+  period: string;
+  total_minutes: number;
+  daily?: { date: string; online_minutes: number }[];
+}
+
+/** Hand-maintained mirror of
+ *  go-ride-kafka-consumers/services/location-producers/internal/api/server.go
+ *  updateLocationRequest. The handler calls decoder.DisallowUnknownFields() —
+ *  sending ANY key not listed here is a 400. Optional keys must be omitted,
+ *  never sent as undefined/null. */
+export interface UpdateLocationPayload {
+  driver_id: string; // must parse as a UUID server-side
+  latitude: number; // -90..90
+  longitude: number; // -180..180
+  event_time?: string; // RFC3339; server substitutes now() when absent
+  geohash?: string;
+  s2_cell_id?: string;
+  accuracy_m?: number; // >= 0
+  source?: string;
+  event_id?: string; // server generates a UUID when absent
+}
+
+export interface UpdateLocationResponse {
+  accepted: boolean;
+  event_id: string;
+  published_at: string;
+}

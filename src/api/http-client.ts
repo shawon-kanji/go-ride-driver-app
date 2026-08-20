@@ -21,7 +21,11 @@ interface RequestOptions {
   skipAuth?: boolean;
 }
 
-export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+export async function requestWithBase<T>(
+  baseUrl: string | undefined,
+  path: string,
+  options: RequestOptions = {},
+): Promise<T> {
   const { method = 'GET', body, skipAuth = false } = options;
 
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -30,7 +34,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${path}`, {
+  const response = await fetch(`${baseUrl}${path}`, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -59,4 +63,9 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   return json as T;
+}
+
+/** go-ride-backend (:8080). Unchanged signature — every existing caller keeps working. */
+export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  return requestWithBase<T>(BASE_URL, path, options);
 }
