@@ -1,8 +1,13 @@
 import { Stack } from 'expo-router';
 
 import { SessionExpiryBanner } from '../../features/auth/components/SessionExpiryBanner';
+import { useLocationBroadcastLifecycle } from '../../features/presence/use-location-broadcast-lifecycle';
 
 export default function AppLayout() {
+  // App-level, not screen-level: broadcasting must survive navigating from Home to
+  // Menu / Vehicles / Verify / Profile.
+  useLocationBroadcastLifecycle();
+
   return (
     <>
       <SessionExpiryBanner />
