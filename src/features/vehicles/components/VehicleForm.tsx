@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Banner } from '../../../components/Banner';
 import { Button } from '../../../components/Button';
-import { Select } from '../../../components/Select';
+import { SegmentedControl } from '../../../components/SegmentedControl';
 import { Stepper } from '../../../components/Stepper';
 import { TextInput } from '../../../components/TextInput';
 import { ApiError } from '../../../api/http-client';
@@ -28,10 +28,11 @@ const EMPTY_DEFAULTS: VehicleFormValues = {
 };
 
 export function VehicleForm({ mode, vehicleId, defaultValues }: VehicleFormProps) {
+  const isCreate = mode === 'create';
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const createMutation = useCreateVehicleMutation();
   const updateMutation = useUpdateVehicleMutation(vehicleId ?? '');
-  const { mutate, isPending } = mode === 'create' ? createMutation : updateMutation;
+  const { mutate, isPending } = isCreate ? createMutation : updateMutation;
 
   const { control, handleSubmit } = useForm<VehicleFormValues>({
     resolver: zodResolver(vehicleSchema),
@@ -54,34 +55,61 @@ export function VehicleForm({ mode, vehicleId, defaultValues }: VehicleFormProps
   };
 
   return (
-    <View className="px-6 py-6">
+    <View
+      className={
+        isCreate
+          ? 'm-5 rounded-card border border-dashed border-neutral-300 p-4'
+          : 'px-5 py-5'
+      }
+    >
+      {isCreate && (
+        <Text className="mb-3 text-[12px] font-jakarta-bold uppercase tracking-[0.08em] text-neutral-500">
+          Add a vehicle
+        </Text>
+      )}
+
       {errorMessage && (
         <Banner message={errorMessage} variant="error" onDismiss={() => setErrorMessage(null)} />
       )}
 
-      <Controller
-        control={control}
-        name="plate_number"
-        render={({ field }) => (
-          <TextInput
-            label="Plate number"
-            autoCapitalize="characters"
-            value={field.value}
-            onChangeText={field.onChange}
-            onBlur={field.onBlur}
+      <View className="flex-row gap-3">
+        <View className="flex-1">
+          <Controller
+            control={control}
+            name="plate_number"
+            render={({ field, fieldState }) => (
+              <TextInput
+                label="Plate number"
+                autoCapitalize="characters"
+                value={field.value}
+                onChangeText={field.onChange}
+                onBlur={field.onBlur}
+                errorText={fieldState.error?.message}
+              />
+            )}
           />
-        )}
-      />
+        </View>
+        <View className="flex-1">
+          <Controller
+            control={control}
+            name="seat_count"
+            render={({ field }) => (
+              <Stepper label="Seats" value={field.value} min={1} max={20} onChange={field.onChange} />
+            )}
+          />
+        </View>
+      </View>
 
       <Controller
         control={control}
         name="model_name"
-        render={({ field }) => (
+        render={({ field, fieldState }) => (
           <TextInput
             label="Model"
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
+            errorText={fieldState.error?.message}
           />
         )}
       />
@@ -89,26 +117,13 @@ export function VehicleForm({ mode, vehicleId, defaultValues }: VehicleFormProps
       <Controller
         control={control}
         name="color"
-        render={({ field }) => (
+        render={({ field, fieldState }) => (
           <TextInput
             label="Color"
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
-          />
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="seat_count"
-        render={({ field }) => (
-          <Stepper
-            label="Seat count"
-            value={field.value}
-            min={1}
-            max={20}
-            onChange={field.onChange}
+            errorText={fieldState.error?.message}
           />
         )}
       />
@@ -117,19 +132,24 @@ export function VehicleForm({ mode, vehicleId, defaultValues }: VehicleFormProps
         control={control}
         name="category"
         render={({ field }) => (
-          <Select
+          <SegmentedControl
             label="Category"
             value={field.value}
             options={CATEGORY_OPTIONS}
             onChange={field.onChange}
+            testID="vehicle-category"
           />
         )}
       />
 
       <Button
-        label={mode === 'create' ? 'Register vehicle' : 'Save changes'}
+        label={isCreate ? 'Register vehicle' : 'Save changes'}
+        variant={isCreate ? 'dark' : 'primary'}
+        shape="rect"
+        size="default"
         onPress={handleSubmit(onValid, onInvalid)}
         loading={isPending}
+        testID="vehicle-submit"
       />
     </View>
   );
