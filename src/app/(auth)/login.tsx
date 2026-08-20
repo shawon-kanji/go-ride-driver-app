@@ -1,4 +1,5 @@
 import { Link, useLocalSearchParams } from 'expo-router';
+import { Lock, Truck } from 'lucide-react-native';
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
@@ -19,21 +20,43 @@ export default function LoginScreen() {
   });
 
   return (
-    <ScrollView className="flex-1 bg-white" contentContainerClassName="flex-grow justify-center px-6 py-12">
-      <Text className="mb-8 text-2xl font-bold text-neutral-900">Log in</Text>
-
-      {infoMessage && (
-        <Banner message={infoMessage} variant="info" onDismiss={() => setInfoMessage(null)} />
-      )}
-
-      <LoginForm initialEmail={email} />
-
-      <View className="mt-6 flex-row justify-center">
-        <Text className="text-sm text-neutral-600">{"Don't have an account? "}</Text>
-        <Link href="/(auth)/signup" className="text-sm font-semibold text-primary-600">
-          Sign up
-        </Link>
+    <View className="flex-1 bg-neutral-0">
+      <View className="bg-primary-500 px-[22px] pb-[30px] pt-[34px]">
+        <View className="flex-row items-center gap-[10px]">
+          <Truck size={24} strokeWidth={2} color="#FFFFFF" />
+          <Text className="text-[15px] font-jakarta-bold tracking-[0.14em] text-white/90">
+            GO RIDE DRIVER
+          </Text>
+        </View>
+        <Text className="mt-3 text-[30px] font-jakarta-extrabold tracking-[-0.02em] text-white">
+          Welcome back
+        </Text>
+        <Text className="mt-2 text-[15px] font-jakarta text-white/[0.82]">
+          Sign in to start your shift. Sessions last 60 minutes, then you&apos;ll be asked again.
+        </Text>
       </View>
-    </ScrollView>
+
+      <ScrollView className="flex-1" contentContainerClassName="grow px-[22px] pb-6 pt-[26px]">
+        {infoMessage && (
+          <Banner message={infoMessage} variant="info" onDismiss={() => setInfoMessage(null)} />
+        )}
+
+        <LoginForm initialEmail={email} />
+
+        <View className="mt-4 flex-row items-center justify-center">
+          <Text className="text-[15px] font-jakarta text-neutral-500">New driver? </Text>
+          <Link href="/(auth)/signup" className="text-[15px] font-jakarta-bold text-primary-600">
+            Create an account
+          </Link>
+        </View>
+
+        <View className="mt-auto flex-row items-start gap-2 rounded-control bg-neutral-50 px-3 py-3">
+          <Lock size={16} strokeWidth={2} color="#4B5563" />
+          <Text className="flex-1 text-[13px] font-jakarta text-neutral-600">
+            Your session is stored in the device keystore, so you stay signed in between shifts.
+          </Text>
+        </View>
+      </ScrollView>
+    </View>
   );
 }

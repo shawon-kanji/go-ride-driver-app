@@ -27,7 +27,11 @@ export function LoginForm({ initialEmail }: LoginFormProps) {
     setErrorMessage(null);
     mutate(values, {
       onError: (error) => {
-        setErrorMessage(error instanceof ApiError ? error.message : 'Unable to log in.');
+        if (error instanceof ApiError) {
+          setErrorMessage(error.status === 401 ? 'Email or password is incorrect.' : error.message);
+          return;
+        }
+        setErrorMessage('Unable to sign in.');
       },
     });
   };
@@ -65,6 +69,7 @@ export function LoginForm({ initialEmail }: LoginFormProps) {
           <TextInput
             label="Password"
             secureTextEntry
+            revealToggle
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -72,7 +77,14 @@ export function LoginForm({ initialEmail }: LoginFormProps) {
         )}
       />
 
-      <Button label="Log in" onPress={handleSubmit(onValid, onInvalid)} loading={isPending} />
+      <Button
+        label="Sign in"
+        size="large"
+        shape="rect"
+        onPress={handleSubmit(onValid, onInvalid)}
+        loading={isPending}
+        testID="login-submit"
+      />
     </View>
   );
 }
