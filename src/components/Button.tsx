@@ -1,6 +1,15 @@
 import { ActivityIndicator, Pressable, Text } from 'react-native';
 
-type Variant = 'primary' | 'secondary' | 'destructive' | 'ghost';
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'destructive'
+  | 'ghost'
+  | 'tonal'
+  | 'dark'
+  | 'muted'
+  | 'success'
+  | 'destructive-outline';
 type Shape = 'rect' | 'pill';
 type Size = 'compact' | 'default' | 'large';
 
@@ -9,6 +18,15 @@ const VARIANT_CLASSES: Record<Variant, string> = {
   secondary: 'bg-secondary-500 active:bg-secondary-600',
   destructive: 'bg-danger-500 active:bg-danger-600',
   ghost: 'bg-transparent border border-neutral-300 active:bg-neutral-100',
+  // UI-SPEC "Explicit non-primary CTA colors" — each of these is a verified,
+  // per-button design decision, not a theme default. Do not collapse them into
+  // `primary`. There is no primary-100/success-600-tint token in colors.js, so
+  // pressed states that have no token use active:opacity-80.
+  tonal: 'bg-primary-50 active:opacity-80', // D04 Upload, D05 + Add
+  dark: 'bg-neutral-900 active:bg-neutral-800', // D05 Register vehicle
+  muted: 'bg-neutral-200', // D06 disabled Go online, D05 unavailable Activate
+  success: 'bg-success-500 active:bg-success-600', // D06 + D07 Go online
+  'destructive-outline': 'bg-transparent border border-neutral-300 active:bg-danger-50', // D03 Log out
 };
 
 const VARIANT_TEXT_CLASSES: Record<Variant, string> = {
@@ -16,6 +34,24 @@ const VARIANT_TEXT_CLASSES: Record<Variant, string> = {
   secondary: 'text-white',
   destructive: 'text-white',
   ghost: 'text-neutral-800',
+  tonal: 'text-primary-700',
+  dark: 'text-white',
+  muted: 'text-neutral-500',
+  success: 'text-white',
+  'destructive-outline': 'text-danger-600',
+};
+
+// Spinner colour must track the variant's TEXT colour, not its fill.
+const VARIANT_SPINNER_COLOR: Record<Variant, string> = {
+  primary: '#FFFFFF',
+  secondary: '#FFFFFF',
+  destructive: '#FFFFFF',
+  ghost: '#1F2937',
+  tonal: '#3730A3',
+  dark: '#FFFFFF',
+  muted: '#6B7280',
+  success: '#FFFFFF',
+  'destructive-outline': '#B91C1C',
 };
 
 const SHAPE_CLASSES: Record<Shape, string> = {
@@ -71,7 +107,7 @@ export function Button({
       {loading && (
         <ActivityIndicator
           size="small"
-          color={variant === 'ghost' ? '#1F2937' : '#FFFFFF'}
+          color={VARIANT_SPINNER_COLOR[variant]}
           className="mr-2"
           testID={testID ? `${testID}-spinner` : undefined}
         />

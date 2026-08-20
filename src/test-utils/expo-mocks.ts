@@ -66,3 +66,30 @@ export function createReactNativeMapsMock() {
     React.createElement(View, { testID: 'map-marker', ...props }, props.children);
   return { __esModule: true, default: MapView, MapView, Marker, PROVIDER_GOOGLE: 'google' };
 }
+
+/** jest.mock factory for 'lucide-react-native'.
+ *  Usage: jest.mock('lucide-react-native', () => require('../../test-utils/expo-mocks').createLucideMock());
+ *  Returns a Proxy so ANY icon name resolves — tests never break when a screen
+ *  swaps one glyph for another, and react-native-svg's native module is never
+ *  loaded under Jest. Each icon renders a View with testID `icon-<Name>`. */
+export function createLucideMock() {
+  const React = require('react');
+  const { View } = require('react-native');
+  const cache = new Map<string, unknown>();
+  return new Proxy(
+    { __esModule: true },
+    {
+      get: (target: Record<string, unknown>, prop: string) => {
+        if (prop in target) return target[prop];
+        if (typeof prop !== 'string') return undefined;
+        if (!cache.has(prop)) {
+          const Icon = (props: Record<string, unknown>) =>
+            React.createElement(View, { testID: `icon-${prop}`, ...props });
+          Icon.displayName = prop;
+          cache.set(prop, Icon);
+        }
+        return cache.get(prop);
+      },
+    },
+  );
+}

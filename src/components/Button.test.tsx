@@ -63,4 +63,53 @@ describe('Button', () => {
 
     expect(screen.getByText('Sign in').props.className as string).toContain('font-jakarta-bold');
   });
+
+  it('renders success variant with bg-success-500 and white text', async () => {
+    await render(<Button label="Go online" onPress={jest.fn()} variant="success" testID="btn" />);
+
+    expect(screen.getByTestId('btn').props.className as string).toContain('bg-success-500');
+    expect(screen.getByText('Go online').props.className as string).toContain('text-white');
+  });
+
+  it('renders muted variant with bg-neutral-200 and neutral-500 text', async () => {
+    await render(<Button label="Go online" onPress={jest.fn()} variant="muted" testID="btn" />);
+
+    expect(screen.getByTestId('btn').props.className as string).toContain('bg-neutral-200');
+    expect(screen.getByText('Go online').props.className as string).toContain('text-neutral-500');
+  });
+
+  it('renders dark variant with bg-neutral-900 and white text', async () => {
+    await render(<Button label="Register vehicle" onPress={jest.fn()} variant="dark" testID="btn" />);
+
+    expect(screen.getByTestId('btn').props.className as string).toContain('bg-neutral-900');
+    expect(screen.getByText('Register vehicle').props.className as string).toContain('text-white');
+  });
+
+  it('renders tonal variant with bg-primary-50 and primary-700 text', async () => {
+    await render(<Button label="Upload" onPress={jest.fn()} variant="tonal" testID="btn" />);
+
+    expect(screen.getByTestId('btn').props.className as string).toContain('bg-primary-50');
+    expect(screen.getByText('Upload').props.className as string).toContain('text-primary-700');
+  });
+
+  it('renders destructive-outline variant with a border, no danger fill, and danger-600 text', async () => {
+    await render(
+      <Button label="Log out" onPress={jest.fn()} variant="destructive-outline" testID="btn" />
+    );
+
+    const className = screen.getByTestId('btn').props.className as string;
+    expect(className).toContain('border-neutral-300');
+    expect(className).not.toContain('bg-danger-500');
+    expect(screen.getByText('Log out').props.className as string).toContain('text-danger-600');
+  });
+
+  it('never calls onPress when muted and disabled', async () => {
+    const onPress = jest.fn();
+    await render(
+      <Button label="Go online" onPress={onPress} variant="muted" disabled testID="btn" />
+    );
+
+    fireEvent.press(screen.getByTestId('btn'));
+    expect(onPress).not.toHaveBeenCalled();
+  });
 });
