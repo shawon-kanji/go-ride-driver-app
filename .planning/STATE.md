@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-08-PLAN.md
-last_updated: "2026-08-20T14:54:00.000Z"
+stopped_at: Completed 02-10-PLAN.md
+last_updated: "2026-08-20T22:51:12.000Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 9 of 13
+Plan: 9 of 13 (02-10 completed out of wave order — see Decisions; 02-09 remains the next plan to execute)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: 7.9 min
-- Total execution time: 2.31 hours
+- Total execution time: 2.31 hours (02-10's duration is not recorded — see Decisions)
 
 **By Phase:**
 
@@ -52,11 +52,12 @@ Plan: 9 of 13
 | 02 P06 | 1 | 9min | 2 tasks / 8 files |
 | 02 P07 | 1 | 10min | 3 tasks / 6 files |
 | 02 P08 | 1 | 15min | 3 tasks / 7 files |
+| 02 P10 | 1 | n/a | 2 tasks / 4 files |
 
 **Recent Trend:**
 
-- Last 5 plans: 02-04 (12min), 02-05 (9min), 02-06 (9min), 02-07 (10min), 02-08 (15min)
-- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 08's slightly longer duration reflects its full-suite gate — tsc/lint/jest/expo export — all green on first attempt, no rework)
+- Last 5 plans: 02-05 (9min), 02-06 (9min), 02-07 (10min), 02-08 (15min), 02-10 (duration not recorded)
+- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 08's slightly longer duration reflects its full-suite gate — tsc/lint/jest/expo export — all green on first attempt, no rework; 02-10's original executor session was interrupted before it could log timing, but its full verification gate re-ran clean during documentation with no rework needed)
 
 *Updated after each plan completion*
 
@@ -99,6 +100,8 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-07]: RNTL v14's `fireEvent` (not just `render`/`rerender`) must be `await`ed when the fired event triggers a state update the next query depends on — confirmed via isolated debug tests before fixing `TextInput.test.tsx`'s focus/blur and reveal-toggle assertions
 - [Phase 02]: [Phase 02-07]: D01/D02 visual retrofit is deliberately isolated to its own plan/wave (per CONTEXT.md's "Visual rollout scope" decision) so a regression there cannot block the location/map work in later Phase 2 waves
 - [Phase 02]: [Phase 02-08]: `verification-summary.ts` (pure, React-free) is now the single source of truth for per-track document counts and the "Can't go online: ..." blocker sentence — it counts distinct required types identically to `deriveOnlineGate`, and plans 02-11 (D03) and 02-12 (D06) must reuse its exports rather than re-deriving KYC counts or inventing a second sentence phrasing
+- [Phase 02]: [Phase 02-10]: `HomeMap` (own-position marker + camera-follow/re-centre state machine) and `ConfirmOnlineSheet` (D07 — the only call site allowed to invoke `ensureForegroundLocation()`, and the only path to `PATCH /driver/online`) are built as standalone, independently-tested components; plan 02-12 (D06) composes both directly using the prop signatures and testIDs recorded in 02-10-SUMMARY.md
+- [Phase 02]: [Phase 02-10]: Executed out of wave order (wave 4) ahead of 02-09 (wave 5), which remains outstanding — both were independently dispatchable since neither depends on the other, but STATE.md's "Plan: N of M" resume pointer still tracks 02-09 as the next plan to execute; the original 02-10 executor session was interrupted by a laptop sleep after both task commits (`586b590`, `85b4fc0`) landed but before SUMMARY.md/STATE.md were written — this was closed out by a documentation-only follow-up pass (no code changes) after re-verifying the full gate (`tsc`, `expo lint`, `jest`, `expo export --platform android`) green
 
 ### Pending Todos
 
@@ -125,6 +128,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-20T14:54:00.000Z
-Stopped at: Completed 02-08-PLAN.md
+Last session: 2026-08-20T22:51:12.000Z
+Stopped at: Completed 02-10-PLAN.md (documentation-only follow-up; implementation was already committed in a prior, interrupted session)
 Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-09-PLAN.md
