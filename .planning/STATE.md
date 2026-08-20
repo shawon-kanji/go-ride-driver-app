@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-10-PLAN.md (documentation-only follow-up; implementation was already committed in a prior, interrupted session)
-last_updated: "2026-08-20T16:04:34.434Z"
+stopped_at: Completed 02-11-PLAN.md
+last_updated: "2026-08-21T00:20:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 16
+  completed_plans: 17
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 10 of 13 (02-09 and 02-10 both complete; wave 5's 02-09 was the last outstanding plan from that reordering — see Decisions)
+Plan: 11 of 13 (02-11 complete — D03 Menu at /menu, the last plan before wave 6's D06 Home rebuild, plan 02-12)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 16
-- Average duration: 8.7 min
-- Total execution time: 2.65 hours (02-10's duration is not recorded — see Decisions)
+- Total plans completed: 17
+- Average duration: 9.1 min
+- Total execution time: 2.99 hours (02-10's duration is not recorded — see Decisions)
 
 **By Phase:**
 
@@ -61,6 +61,7 @@ Plan: 10 of 13 (02-09 and 02-10 both complete; wave 5's 02-09 was the last outst
 
 *Updated after each plan completion*
 | Phase 02 P09 | 20 | 3 tasks | 7 files |
+| Phase 02 P11 | 20 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,8 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-09]: `VehicleCard`'s sub-line format (`"<colour> · <N> seats · <category>"`) and warning-strip copy (`"<N> document(s) missing or rejected, so this vehicle can't be activated yet."` + a `Fix` control routing to `/verify` preselected to the vehicle) are now the canonical D05 strings — plan 02-10's D07 sheet and any later D06 work must reuse them verbatim rather than inventing a variant
 - [Phase 02]: [Phase 02-09]: `VehicleCard`'s unverified-Activate gate is an in-code-documented UX pre-empt only; `src/app/(app)/vehicles/[id].tsx`'s 403 -> `kycBlockReason` -> `KycBlockedBanner` path (Phase 01.1 plan 07) remains untouched and stays the authoritative backstop — confirmed via `git diff --stat` showing zero changes to that file
 - [Phase 02]: [Phase 02-09]: `grep -c "useKycStatusQuery" src/app/(app)/vehicles/index.tsx` returns 2 (import line + single call site), not the plan's literal `1` — this is an unavoidable artifact of a named import and does not indicate a per-row query; the hook is confirmed called exactly once in the component body
+- [Phase 02]: [Phase 02-11]: `/menu`'s header status-line copy is locked to `"Account active · ready to drive"` (gate.status === 'ready') and `"Account active · not yet cleared to drive"` (every other gate status) — plan 02-12's D06 profile chip must reuse these verbatim if it echoes status
+- [Phase 02]: [Phase 02-11]: Fixed a real Metro/Expo-Router bundling bug, not menu-specific: Expo Router's `require.context` (`node_modules/expo-router/_ctx.*.js`) auto-registers every file under `src/app` as a route and excludes only `+api`/`+html`/`+middleware` by convention — co-locating a screen's `*.test.tsx` inside `src/app` (this plan's own file layout) gets it auto-registered as its own route and bundled into `expo export`, pulling `@testing-library/react-native`'s Node-only `console` polyfill into the Metro graph and hard-failing the production bundle. Added a `resolver.blockList` entry to `metro.config.js` excluding `*.test.*` project-wide — Metro-only, Jest is unaffected. Any future plan co-locating a screen test file inside `src/app` is now safe by construction. Cosmetic residue: `.expo/types/router.d.ts` still lists `/menu.test` as a typed `Href` (the typed-routes CLI generator is a separate code path from Metro's bundler and doesn't respect `resolver.blockList`) — harmless since the route isn't actually reachable at runtime.
 
 ### Pending Todos
 
@@ -132,6 +135,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-20T16:04:00.000Z
-Stopped at: Completed 02-09-PLAN.md
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-11-PLAN.md (next undispatched plan; waves 1-5 of Phase 02 are now all complete)
+Last session: 2026-08-21T00:20:00.000Z
+Stopped at: Completed 02-11-PLAN.md
+Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-12-PLAN.md (next undispatched plan; wave 6, D06 Home rebuild — last plan of Phase 02)
