@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-08-20T14:06:44.934Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-08-20T14:13:26.624Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 20
-  completed_plans: 9
+  completed_plans: 10
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-08-01)
 ## Current Position
 
 Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 4 of 13
+Plan: 5 of 13
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 9
-- Average duration: 7.2 min
-- Total execution time: 1.39 hours
+- Total plans completed: 10
+- Average duration: 7.4 min
+- Total execution time: 1.59 hours
 
 **By Phase:**
 
@@ -47,11 +47,12 @@ Plan: 4 of 13
 | 02 P01 | 1 | 6min | 3 tasks / 10 files |
 | 02 P02 | 1 | 8min | 2 tasks / 14 files |
 | 02 P03 | 1 | 10min | 3 tasks / 14 files |
+| 02 P04 | 1 | 12min | 3 tasks / 10 files |
 
 **Recent Trend:**
 
-- Last 5 plans: 01.1-06 (9min), 02-01 (6min), 02-02 (8min), 02-03 (10min)
-- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 05-06, 02-01, 02-02, and 02-03 all landed near baseline)
+- Last 5 plans: 02-01 (6min), 02-02 (8min), 02-03 (10min), 02-04 (12min)
+- Trend: stable (04 remains the outlier from compounding TDD/test-infra fixes; 02-01 through 02-04 all landed near baseline)
 
 *Updated after each plan completion*
 
@@ -81,6 +82,9 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-03]: Extended the single existing splash-hide gate in src/app/_layout.tsx to also wait on useFonts(PLUS_JAKARTA_SANS_FONT_MAP) rather than adding a second preventAutoHideAsync/hideAsync pair — a second gate would race the first and risk a system-font flash on cold start
 - [Phase 02]: [Phase 02-03]: RNTL v14 (this repo's version) has no UNSAFE_getByType/type-based query helpers on screen or the render result — component tests needing to assert an element type present (e.g. ActivityIndicator) must give it an explicit testID instead
 - [Phase 02]: [Phase 02-03]: `npx expo export --platform android` does not auto-load `.env` (unlike `expo lint`/`expo start`) — app.config.js's MAP_API_KEY guard throws unless the shell env already has it exported; not a bug in this app's code, just this Expo CLI command's behavior
+- [Phase 02]: [Phase 02-04]: `requestWithBase(baseUrl, path, options)` extracted as the shared core of `apiRequest` — any future backend service gets its own `EXPO_PUBLIC_*_BASE_URL` client file calling `requestWithBase`, while `apiRequest` itself stays pinned to go-ride-backend with an unchanged signature for every existing caller
+- [Phase 02]: [Phase 02-04]: `deriveOnlineGate` (src/features/presence/gating.ts) is now the single source of truth for "may this driver go online" — checks identity (KYC) before vehicle documents to mirror the backend's own 403 precedence, and both D06 (02-10) and D07 (02-09) must consume it directly rather than re-deriving the decision
+- [Phase 02]: [Phase 02-04]: location-producers' `/update-location` decoder uses `DisallowUnknownFields()` — `UpdateLocationPayload` must be built by omitting unset optional keys, never sending them as `undefined`/`null`; `locationClient.updateLocation` only forwards the keys explicitly passed by its caller
 
 ### Pending Todos
 
@@ -107,6 +111,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-20T14:05:30.000Z
-Stopped at: Completed 02-03-PLAN.md
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-04-PLAN.md
+Last session: 2026-08-20T14:12:26.000Z
+Stopped at: Completed 02-04-PLAN.md
+Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-05-PLAN.md
