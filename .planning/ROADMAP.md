@@ -126,7 +126,7 @@ Phases execute in numeric order: 1 → 01.1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation — Auth, Profile, Vehicles | 0/TBD | Not started | - |
 | 01.1. KYC — Identity & Vehicle Document Verification (INSERTED) | 6/7 | In Progress|  |
-| 2. Online/Offline + Foreground Location + Maps | 0/13 | Planned | - |
+| 2. Online/Offline + Foreground Location + Maps | 2/13 | In Progress|  |
 | 3. Realtime Job Offers — WebSocket + Accept | 0/TBD | Not started | - |
 | 4. Push Notifications for Job Offers | 0/TBD | Not started | - |
 | 5. Trip Lifecycle + Cash Collection | 0/TBD | Not started | - |

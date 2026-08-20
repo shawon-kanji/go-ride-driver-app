@@ -22,7 +22,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Presence & Location
 
-- [ ] **PRES-01**: Driver can toggle online/offline status, gated on having at least one active vehicle — **and, as of 2026-08-09, also gated by the backend on the same KYC approval described under VEH-03** (`PATCH /driver/online` returns `403 KYC_NOT_APPROVED` if driver identity isn't approved, or `403 VEHICLE_NOT_VERIFIED` if the currently active vehicle's documents aren't). See VEH-03/VEH-04.
+- [x] **PRES-01**: Driver can toggle online/offline status, gated on having at least one active vehicle — **and, as of 2026-08-09, also gated by the backend on the same KYC approval described under VEH-03** (`PATCH /driver/online` returns `403 KYC_NOT_APPROVED` if driver identity isn't approved, or `403 VEHICLE_NOT_VERIFIED` if the currently active vehicle's documents aren't). See VEH-03/VEH-04.
 - [x] **PRES-02**: While online, the app broadcasts the driver's foreground location to the backend on a tiered interval
 - [x] **PRES-03**: Driver sees their current location on a map while online
 
@@ -109,7 +109,7 @@ Explicitly excluded. Documented to prevent scope creep.
 | KYC-02 | Phase 01.1 | Complete |
 | KYC-03 | Phase 01.1 | Complete |
 | KYC-04 | Phase 01.1 | Complete |
-| PRES-01 | Phase 2 | Pending |
+| PRES-01 | Phase 2 | Complete |
 | PRES-02 | Phase 2 | Complete |
 | PRES-03 | Phase 2 | Complete |
 | OFFER-01 | Phase 3 | Pending |
