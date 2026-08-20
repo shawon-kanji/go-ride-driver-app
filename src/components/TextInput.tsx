@@ -7,9 +7,9 @@ interface Props extends TextInputProps {
 export function TextInput({ label, ...inputProps }: Props) {
   return (
     <View className="mb-4">
-      <Text className="mb-1 text-sm font-medium text-neutral-700">{label}</Text>
+      <Text className="mb-1 text-[13px] font-jakarta-bold text-neutral-700">{label}</Text>
       <RNTextInput
-        className="rounded-md border border-neutral-300 px-3 py-3 text-base text-neutral-900"
+        className="min-h-[52px] rounded-control border-[1.5px] border-neutral-300 px-3 py-3 text-[15px] font-jakarta-medium text-neutral-900"
         placeholderTextColor="#9CA3AF"
         autoCapitalize="none"
         autoCorrect={false}

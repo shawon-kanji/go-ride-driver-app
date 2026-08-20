@@ -25,8 +25,10 @@ interface BadgeProps {
 
 export function Badge({ label, variant }: BadgeProps) {
   return (
-    <View className={`self-start rounded-full px-2.5 py-1 ${VARIANT_CLASSES[variant]}`}>
-      <Text className={`text-xs font-medium ${VARIANT_TEXT_CLASSES[variant]}`}>{label}</Text>
+    <View className={`self-start rounded-pill px-2.5 py-1 ${VARIANT_CLASSES[variant]}`}>
+      <Text className={`text-[12px] font-jakarta-bold ${VARIANT_TEXT_CLASSES[variant]}`}>
+        {label}
+      </Text>
     </View>
   );
 }

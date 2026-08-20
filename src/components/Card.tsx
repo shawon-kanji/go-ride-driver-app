@@ -5,7 +5,7 @@ interface CardProps extends ViewProps {
 }
 
 export function Card({ onPress, className = '', children, ...rest }: CardProps) {
-  const classes = `rounded-lg border border-neutral-200 bg-white p-4 ${className}`;
+  const classes = `rounded-card border border-neutral-200 bg-white p-4 ${className}`;
 
   if (onPress) {
     return (

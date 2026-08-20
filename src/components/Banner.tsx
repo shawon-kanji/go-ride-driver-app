@@ -25,12 +25,16 @@ interface BannerProps {
 export function Banner({ message, variant = 'info', onDismiss }: BannerProps) {
   return (
     <View
-      className={`mb-4 flex-row items-center justify-between rounded-md border px-3 py-3 ${VARIANT_CLASSES[variant]}`}
+      className={`mb-4 flex-row items-center justify-between rounded-control border px-3 py-3 ${VARIANT_CLASSES[variant]}`}
     >
-      <Text className={`flex-1 text-sm ${VARIANT_TEXT_CLASSES[variant]}`}>{message}</Text>
+      <Text className={`flex-1 text-[14px] font-jakarta-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>
+        {message}
+      </Text>
       {onDismiss && (
         <Pressable onPress={onDismiss} hitSlop={8} className="ml-3">
-          <Text className={`text-sm font-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>✕</Text>
+          <Text className={`text-[14px] font-jakarta-bold ${VARIANT_TEXT_CLASSES[variant]}`}>
+            ✕
+          </Text>
         </Pressable>
       )}
     </View>

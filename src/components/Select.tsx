@@ -19,10 +19,10 @@ export function Select<T extends string>({ label, value, options, onChange }: Se
 
   return (
     <View className="mb-4">
-      <Text className="mb-1 text-sm font-medium text-neutral-700">{label}</Text>
+      <Text className="mb-1 text-sm font-jakarta-bold text-neutral-700">{label}</Text>
       <Pressable
         onPress={() => setOpen(true)}
-        className="flex-row items-center justify-between rounded-md border border-neutral-300 px-3 py-3"
+        className="flex-row items-center justify-between rounded-control border border-neutral-300 px-3 py-3"
       >
         <Text className="text-base text-neutral-900">{selected?.label ?? 'Select...'}</Text>
         <Text className="text-neutral-500">▾</Text>
@@ -33,7 +33,7 @@ export function Select<T extends string>({ label, value, options, onChange }: Se
           className="flex-1 items-center justify-center bg-black/40 px-6"
           onPress={() => setOpen(false)}
         >
-          <View className="w-full overflow-hidden rounded-lg bg-white">
+          <View className="w-full overflow-hidden rounded-card bg-white">
             <FlatList
               data={options}
               keyExtractor={(item) => item.value}
@@ -46,7 +46,7 @@ export function Select<T extends string>({ label, value, options, onChange }: Se
                   className={`px-4 py-3 ${item.value === value ? 'bg-primary-50' : ''}`}
                 >
                   <Text
-                    className={`text-base ${item.value === value ? 'font-semibold text-primary-700' : 'text-neutral-900'}`}
+                    className={`text-base ${item.value === value ? 'font-jakarta-semibold text-primary-700' : 'text-neutral-900'}`}
                   >
                     {item.label}
                   </Text>
