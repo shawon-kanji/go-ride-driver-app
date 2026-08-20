@@ -1,4 +1,7 @@
-// Placeholder palette — final "bold/vibrant" brand identity is a separate UI-spec pass.
+// Driver-app palette. Confirmed source of truth by design_handoff_go_ride/README.md
+// ("Taken from go-ride-driver-app/src/theme/colors.js — use that file as the source of
+// truth"). Values verified 1:1 against the handoff's :root CSS variables. Do not change
+// these without a design-handoff change.
 // Single hand-maintained source of truth: consumed by tailwind.config.js directly,
 // and re-exported via ./tokens.ts for RN APIs that can't read a className.
 module.exports = {
