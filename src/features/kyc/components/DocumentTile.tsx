@@ -1,15 +1,10 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
-import { Badge } from '../../../components/Badge';
-import { Card } from '../../../components/Card';
-import type { DocumentResponse, DocumentStatus, DocumentType } from '../../../api/types';
+import { Button } from '../../../components/Button';
+import type { DocumentResponse, DocumentType } from '../../../api/types';
+import { documentRowState } from '../verification-summary';
 import { DOCUMENT_TYPE_LABELS } from '../schemas';
-
-const STATUS_BADGE: Record<DocumentStatus, { label: string; variant: 'active' | 'pending' | 'blocked' }> = {
-  uploaded: { label: 'In review', variant: 'pending' },
-  approved: { label: 'Approved', variant: 'active' },
-  rejected: { label: 'Rejected', variant: 'blocked' },
-};
+import { StatusDisc } from './StatusDisc';
 
 interface DocumentTileProps {
   documentType: DocumentType;
@@ -19,26 +14,55 @@ interface DocumentTileProps {
 }
 
 export function DocumentTile({ documentType, document, onPress }: DocumentTileProps) {
-  const badge = document
-    ? STATUS_BADGE[document.status]
-    : { label: 'Not uploaded', variant: 'inactive' as const };
+  const state = documentRowState(document);
+  const rejected = state === 'rejected';
+  const missing = state === 'missing';
 
   return (
-    <Card onPress={onPress} className="mb-3">
-      <View className="flex-row items-center justify-between">
-        <Text className="flex-1 pr-3 text-base font-semibold text-neutral-900">
+    <Pressable
+      testID="document-tile-row"
+      onPress={onPress}
+      className={`flex-row items-center gap-[10px] border-t border-neutral-200 px-4 py-[14px] ${rejected ? 'bg-danger-50' : 'active:bg-neutral-50'}`}
+    >
+      <StatusDisc state={state} />
+      <View className="flex-1">
+        <Text
+          className={`text-[15px] font-jakarta-bold ${missing ? 'text-neutral-500' : 'text-neutral-900'}`}
+        >
           {DOCUMENT_TYPE_LABELS[documentType]}
         </Text>
-        <Badge label={badge.label} variant={badge.variant} />
+        {rejected && (
+          <Text className="mt-0.5 text-[13px] font-jakarta text-danger-700">
+            {`Rejected — ${document?.rejection_reason ?? 'no reason provided'}`}
+          </Text>
+        )}
       </View>
-
-      {!document && <Text className="mt-1 text-sm text-neutral-600">Tap to upload</Text>}
-
-      {document?.status === 'rejected' && (
-        <Text className="mt-1 text-sm text-danger-700">
-          {document.rejection_reason ?? 'No reason provided'}
-        </Text>
+      {state === 'approved' && (
+        <Text className="text-[13px] font-jakarta-bold text-success-700">Approved</Text>
       )}
-    </Card>
+      {state === 'in_review' && (
+        <Text className="text-[13px] font-jakarta-bold text-warning-700">In review</Text>
+      )}
+      {state === 'rejected' && (
+        <Button
+          label="Re-upload"
+          variant="destructive"
+          shape="pill"
+          size="compact"
+          onPress={onPress}
+          testID="document-reupload"
+        />
+      )}
+      {state === 'missing' && (
+        <Button
+          label="Upload"
+          variant="tonal"
+          shape="pill"
+          size="compact"
+          onPress={onPress}
+          testID="document-upload"
+        />
+      )}
+    </Pressable>
   );
 }
