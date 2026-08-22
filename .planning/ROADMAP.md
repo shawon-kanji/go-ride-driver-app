@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation — Auth, Profile, Vehicles** - Driver can sign up, log in, manage their profile, and register/manage vehicles
 - [ ] **Phase 01.1: KYC — Identity & Vehicle Document Verification (INSERTED)** - Driver can upload identity and vehicle documents, track approval status, and understand why they're blocked until approved
-- [ ] **Phase 2: Online/Offline + Foreground Location + Maps** - Driver with an active vehicle can go online, see themselves on a map, and broadcast location
+- [x] **Phase 2: Online/Offline + Foreground Location + Maps** - Driver with an active vehicle can go online, see themselves on a map, and broadcast location
 - [ ] **Phase 3: Realtime Job Offers — WebSocket + Accept** - Online driver receives job offers over WebSocket (with reconnect replay) and can accept before TTL expiry
 - [ ] **Phase 4: Push Notifications for Job Offers** - Backgrounded/killed-app driver still receives and can act on job offer notifications
 - [ ] **Phase 5: Trip Lifecycle + Cash Collection** - Assigned driver can start, end, cancel, and collect cash for a trip
@@ -72,7 +72,7 @@ Plans:
 - [ ] 02-10-PLAN.md — Wave 4: HomeMap and the D07 ConfirmOnlineSheet
 - [ ] 02-11-PLAN.md — Wave 5: MenuRow and the D03 Menu screen at /menu
 - [ ] 02-12-PLAN.md — Wave 6: ProfileChip, StatCards, useHomeCoords, D06 Home rebuild
-- [ ] 02-13-PLAN.md — Wave 7: device checkpoints (Maps API key, online/offline + broadcast) and validation sign-off
+- [x] 02-13-PLAN.md — Wave 7: device checkpoints (Maps API key, online/offline + broadcast) and validation sign-off
 
 **Note (added 2026-08-09):** same KYC precondition as Phase 1's note applies here — `PATCH /driver/online` now also requires driver identity + active-vehicle KYC approval on the backend, on top of the "has an active vehicle" check this phase's criteria already describe.
 
@@ -126,7 +126,7 @@ Phases execute in numeric order: 1 → 01.1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation — Auth, Profile, Vehicles | 0/TBD | Not started | - |
 | 01.1. KYC — Identity & Vehicle Document Verification (INSERTED) | 6/7 | In Progress|  |
-| 2. Online/Offline + Foreground Location + Maps | 12/13 | In Progress|  |
+| 2. Online/Offline + Foreground Location + Maps | 13/13 | Complete | 2026-08-22 |
 | 3. Realtime Job Offers — WebSocket + Accept | 0/TBD | Not started | - |
 | 4. Push Notifications for Job Offers | 0/TBD | Not started | - |
 | 5. Trip Lifecycle + Cash Collection | 0/TBD | Not started | - |

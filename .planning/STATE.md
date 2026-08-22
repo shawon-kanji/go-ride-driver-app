@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-12-PLAN.md
-last_updated: "2026-08-21T01:00:00.000Z"
+stopped_at: Completed 02-13-PLAN.md — Phase 02 complete
+last_updated: "2026-08-22T15:10:00.000Z"
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 20
-  completed_plans: 18
+  completed_plans: 19
 ---
 
 # Project State
@@ -19,18 +19,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-01)
 
 **Core value:** A driver can reliably go online, get matched to a nearby rider, and complete a cash trip end-to-end without missing or losing a job offer.
-**Current focus:** Phase 02 — online-offline-foreground-location-maps
+**Current focus:** Phase 02 — online-offline-foreground-location-maps — COMPLETE. Next: Phase 3 (Realtime Job Offers — WebSocket + Accept), plus Phase 01.1's still-open checkpoint (see Pending Todos).
 
 ## Current Position
 
-Phase: 02 (online-offline-foreground-location-maps) — EXECUTING
-Plan: 12 of 13 (02-12 complete — D06 Home rebuild, wave 6; only plan 02-13's manual on-device verification remains)
+Phase: 02 (online-offline-foreground-location-maps) — COMPLETE
+Plan: 13 of 13 (02-13 approved 2026-08-22 — device checkpoint: Maps tiles, online/offline + foreground location broadcast all confirmed working on a real device against a running backend; see 02-13-SUMMARY.md for two real bugs found and fixed during verification)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: 9.4 min
 - Total execution time: 3.41 hours (02-10's duration is not recorded — see Decisions)
 
@@ -110,14 +110,14 @@ Recent decisions affecting current work:
 - [Phase 02]: [Phase 02-09]: `grep -c "useKycStatusQuery" src/app/(app)/vehicles/index.tsx` returns 2 (import line + single call site), not the plan's literal `1` — this is an unavoidable artifact of a named import and does not indicate a per-row query; the hook is confirmed called exactly once in the component body
 - [Phase 02]: [Phase 02-11]: `/menu`'s header status-line copy is locked to `"Account active · ready to drive"` (gate.status === 'ready') and `"Account active · not yet cleared to drive"` (every other gate status) — plan 02-12's D06 profile chip must reuse these verbatim if it echoes status
 - [Phase 02]: [Phase 02-11]: Fixed a real Metro/Expo-Router bundling bug, not menu-specific: Expo Router's `require.context` (`node_modules/expo-router/_ctx.*.js`) auto-registers every file under `src/app` as a route and excludes only `+api`/`+html`/`+middleware` by convention — co-locating a screen's `*.test.tsx` inside `src/app` (this plan's own file layout) gets it auto-registered as its own route and bundled into `expo export`, pulling `@testing-library/react-native`'s Node-only `console` polyfill into the Metro graph and hard-failing the production bundle. Added a `resolver.blockList` entry to `metro.config.js` excluding `*.test.*` project-wide — Metro-only, Jest is unaffected. Any future plan co-locating a screen test file inside `src/app` is now safe by construction. Cosmetic residue: `.expo/types/router.d.ts` still lists `/menu.test` as a typed `Href` (the typed-routes CLI generator is a separate code path from Metro's bundler and doesn't respect `resolver.blockList`) — harmless since the route isn't actually reachable at runtime.
-- [Phase 02]: [Phase 02-12]: D06 Home is fully rebuilt — `HomeMap` + `useHomeCoords` (own-position, never prompts), floating `ProfileChip` -> `/menu`, `StatCards` (real earnings/online-time), the preserved Phase 01.1 Verification card (copy verbatim, className migrated off legacy Tailwind tokens), and a control block that switches on `deriveOnlineGate`'s five statuses to route to `/vehicles`, `/verify`, D07's `ConfirmOnlineSheet`, or `mutate(false)` for Go offline. Every Wave 0 screen test file listed in 02-VALIDATION.md now exists. Remaining phase work is plan 02-13's manual on-device verification pass (bottom-sheet height against the map, whether `pt-14` clears the status bar) — no further D06 code changes anticipated first.
+- [Phase 02]: [Phase 02-12]: D06 Home is fully rebuilt — `HomeMap` + `useHomeCoords` (own-position, never prompts), floating `ProfileChip` -> `/menu`, `StatCards` (real earnings/online-time), the preserved Phase 01.1 Verification card (copy verbatim, className migrated off legacy Tailwind tokens), and a control block that switches on `deriveOnlineGate`'s five statuses to route to `/vehicles`, `/verify`, D07's `ConfirmOnlineSheet`, or `mutate(false)` for Go offline. Every Wave 0 screen test file listed in 02-VALIDATION.md now exists.
+- [Phase 02]: [Phase 02-13]: Device checkpoint approved 2026-08-22 on a real Android device (`R5CR2116JDY`) via `npx expo run:android` (a full EAS dev-client build was never needed — direct native build worked fine for local verification). Found and fixed two real bugs during verification: (1) `useSessionStore.driver` stayed `null` after any session restore via `hydrate()` — only the initial login's `setSession()` populated it — silently blocking every location broadcast POST since `location-broadcaster.ts` reads `driver.id` from that store; fixed by mirroring `useProfileQuery()`'s driver into the session store on every load, in `use-location-broadcast-lifecycle.ts`. (2) `StatCards.tsx`'s `formatMinutes` leaked float precision (`total % 60` on a fractional `total_minutes`) straight into the UI; fixed by flooring to whole minutes first. See 02-13-SUMMARY.md for full detail, including two local-dev-only infra bugs found in the sibling `go-ride/scripts/run-all.sh` (JWT_SECRET and STORAGE_ENDPOINT never reaching the Go services because `.env` wasn't sourced) — not app-code bugs, fixed in that script.
+- Local dev workflow going forward: `go-ride/scripts/run-all.sh` now sources each service's own `.env` before starting it — no more manual `export JWT_SECRET=...` needed. When testing on a physical device via USB, remember `adb reverse tcp:8080 tcp:8080` (backend), `tcp:8081 tcp:8081` (location-producers), `tcp:8084 tcp:8084` (driver-request-handler), and `tcp:9000 tcp:9000` (AIStor/MinIO, for KYC document uploads) — Metro itself should NOT use 8081 (collides with location-producers); start it with `--port 8090` (or another free port) and `adb reverse tcp:8090 tcp:8090` instead.
 
 ### Pending Todos
 
-- Manually verify Phase 1's 5 success criteria on a real Android emulator/device against a locally-running `go-ride-backend` (port 8080, emulator reaches it at `10.0.2.2`) — see the verification steps in the approved plan at the time of implementation (2026-08-02). This requires EAS dev-client build + device/emulator access this session didn't have.
-- Run `eas init` / `eas build:configure` and produce the first custom dev-client build — not yet done (requires interactive `eas-cli login`).
-- Once manually verified, mark Phase 1 complete (`/gsd:verify-work` or equivalent) and advance to Phase 2.
-- Run `/gsd:execute-phase 01.1` to implement the 7 checker-verified KYC plans (waves 0–4). Plan 07's Task 3 is a human-verify checkpoint requiring a real device against a running `go-ride-backend`.
+- Phase 01.1's checkpoint (plan `01.1-07` Task 3) is still open. Steps 4–6 and an equivalent of step 11 (manual document approval unlocking the KYC/vehicle-active gate) were exercised as a side effect of tonight's Phase 2 testing, but steps 7–10 were not: gallery-fallback upload, a rejected-document re-upload flow, the "replace approved document" confirm dialog, and the KYC-blocked vehicle-activation banner. Needs a dedicated pass through those four steps before Phase 01.1 can be marked complete.
+- Phase 3 (Realtime Job Offers — WebSocket + Accept) has not been planned yet — run `/gsd:plan-phase 3` (or `/gsd:discuss-phase 3` first if scope needs discussion) to produce its CONTEXT/RESEARCH/plans.
 
 ### Process Note
 
@@ -137,6 +137,6 @@ Phase 1 was discussed via `/gsd:discuss-phase` (CONTEXT.md captured normally), b
 
 ## Session Continuity
 
-Last session: 2026-08-21T01:00:00.000Z
-Stopped at: Completed 02-12-PLAN.md
-Resume file: .planning/phases/02-online-offline-foreground-location-maps/02-13-PLAN.md (next undispatched plan — the phase's manual on-device verification pass)
+Last session: 2026-08-22T15:10:00.000Z
+Stopped at: Completed 02-13-PLAN.md — Phase 02 complete
+Resume: Phase 3 (Realtime Job Offers — WebSocket + Accept) has not been planned yet — run `/gsd:plan-phase 3` next. Phase 01.1's checkpoint also has 4 steps still open (see Pending Todos) and can be closed out opportunistically whenever device+backend access is available again.

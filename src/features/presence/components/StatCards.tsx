@@ -5,8 +5,9 @@ import { useTodayEarningsQuery, useTodayOnlineTimeQuery } from '../api';
 /** `h = Math.floor(total / 60)`, `m = total % 60`; drops the `0h` prefix when
  *  there are no full hours yet. Exported so it can be exercised directly. */
 export function formatMinutes(total: number): string {
-  const h = Math.floor(total / 60);
-  const m = total % 60;
+  const totalMinutes = Math.floor(total);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
   return h > 0 ? `${h}h ${m}m` : `${m}m`;
 }
 

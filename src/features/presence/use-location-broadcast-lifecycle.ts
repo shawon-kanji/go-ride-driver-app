@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { useProfileQuery } from '../profile/api';
+import { useSessionStore } from '../../stores/session-store';
 import { startLocationBroadcast, stopLocationBroadcast } from './location-broadcaster';
 
 /** Owns the broadcaster's lifecycle for the whole authenticated app.
@@ -18,6 +19,17 @@ import { startLocationBroadcast, stopLocationBroadcast } from './location-broadc
 export function useLocationBroadcastLifecycle(): void {
   const { data } = useProfileQuery();
   const isOnline = data?.driver.is_online;
+
+  // A session restored via hydrate() (any relaunch after the initial login) never
+  // repopulates session-store's `driver` — only setSession() at login does. The
+  // broadcaster reads driver.id from there, so without this it silently no-ops on
+  // every fix for the rest of the session. The profile query is the one thing here
+  // guaranteed to have a fresh driver, so mirror it in on every load.
+  useEffect(() => {
+    if (!data?.driver) return;
+    const { id, email, first_name, last_name } = data.driver;
+    useSessionStore.setState({ driver: { id, email, first_name, last_name } });
+  }, [data?.driver]);
 
   useEffect(() => {
     if (isOnline === undefined) return; // profile still loading — decide nothing yet

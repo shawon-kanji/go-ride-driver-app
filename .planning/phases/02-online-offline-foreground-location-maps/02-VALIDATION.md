@@ -78,11 +78,17 @@ created: 2026-08-18
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 90s
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 90s
 - [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+### Manual verification results (2026-08-22, real device `R5CR2116JDY` + local backend stack)
+
+- Map tiles render correctly (MAP_API_KEY reaches the native build, matching SHA-1/package restriction) — confirmed.
+- Full online → broadcast → offline loop confirmed end to end, including a real bug found and fixed along the way (session-store `driver` never repopulated after a session restore, silently blocking every broadcast POST) — see 02-13-SUMMARY.md.
+- Extended multi-hour real-GPS cadence not exercised (inherently outside a single session, as this table already notes); first-ping and immediate-heartbeat behavior confirmed instead.
+
+**Approval:** approved 2026-08-22 — see 02-13-SUMMARY.md for full detail and the two real bugs found/fixed during this pass.
